@@ -1,0 +1,12 @@
+{
+  "version": "0.1.0",
+  "module": "local/moonpressure",
+  "source": "actual local zip extracted into isolated workspace",
+  "archive_files": 46,
+  "consumer_tests": {
+    "wasm": 1,
+    "wasm-gc": 1,
+    "js": 1
+  },
+  "registry_installation": "not performed"
+}

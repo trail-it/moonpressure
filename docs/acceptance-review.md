@@ -1,0 +1,37 @@
+# 验收准备复核
+
+材料日期：2026-10-15。项目 MoonPressure 0.1.0，临时模块 `local/moonpressure`，本地分支 main。GitHub owner/repo、真实 Git 提交身份、Mooncakes 账号/namespace、参赛者/队员均待定。本地中性 Git 身份不是正式贡献归属。
+
+## 当期规则
+
+官方页面 https://moonbitlang.github.io/Hackathon2026/ 依赖 JS；2026-10-15 实际读取官方仓库正文 https://github.com/moonbitlang/Hackathon2026/blob/main/src/App.tsx ，获取方式为 raw GitHub，原件留在忽略的 research/。十月报名和验收截止 2026-10-31、最多提交 3 次、每队至多 3 人、MoonBit 主体、公开连续开发、可复现测试/演示与开源合规。未自行解释申报次数的适用主体，未执行任何报名。
+
+## 分项证据
+
+|项目|证据与实际结果|状态|
+|---|---|---|
+|独立需求和生态去重|根目录四份报告；取得 3019 条 registry 元数据并检索。响度/Wasm 两候选被淘汰。部分 sysinfo/subproc 源码请求失败，保留竞争风险|本地完成|
+|MoonBit 主体|根包解析、层级归约、差分、状态机、JSON；native MoonBit 遍历/组装；C 仅 I/O/stat/clock/sleep|完成|
+|工具链|Windows/Linux 均 moon 0.1.20261012、moonc v0.10.15+943464bfa；具体脱敏输出见 test-evidence/*-core.json|完成|
+|格式/检查/构建|fmt --check、check（+73/deny-warn）、release build（deny-warn）；Windows wasm/wasm-gc/js，Linux 再含 native|通过|
+|库与文档测试|每个承诺后端 16 项；不将同一套跨后端运行累计为新增测试|通过|
+|演示|每后端 5 个 synthetic 区间，独立手算 oracle，状态 ready/shed/shed/shed/ready，跨后端一致|通过|
+|真实 Linux 能力|Linux 7.0.0-38-generic，实际 cgroup v2 三次观察/两个区间；Python 从同次读取文本独立解析、核对预算和差分|通过|
+|真实验证边界|没有写 cgroup、没有制造真实 OOM/压力；降载/恢复情景由明确 synthetic trace 验证|如实披露|
+|错误路径|计数溢出、PSI 重复/缺项、部分 throttle、身份/计数回退、时间/gap、重复区间；原生必需文件缺失/超大读取/路径越界等|通过|
+|公开 API|根 pkg.generated.mbti 与 native/pkg.generated.mbti；后者来自显式 native 目标。独立消费者从包内调用|完成|
+|归档消费|实际 moon package zip，隔离 moon.work 使用解包库；消费者新增 1 项测试，Linux 再从包编译 C 桥并实际调用 cgroup|通过，见 test-evidence/linux-consumer.json|
+|许可证/来源/AI|MIT、THIRD_PARTY.md、AI_USAGE.md；original synthetic fixture，主机 raw 不分发|完成；参赛者理解仍待本人复核|
+|申报与展示|submission-proposal.md、本地一页 PDF、docs/demo.md|本地草稿|
+|公开仓库、持续公开记录|本地保留真实功能阶段历史；无远程地址，无上传授权|待发布，不能冒充已满足公开要求|
+|正式包/registry 安装|临时模块名仅用于本地包验证；未上传 Mooncakes|待发布|
+|远端 CI|.github/workflows/ci.yml 已准备；滚动官方工具链、实际版本写日志，尚无在线结果|待发布|
+|报名/入群/官方审核|未执行，未填写真实个人资料|未开始|
+
+## 新增贡献和限制
+
+本次从空目录独立实现 cgroup v2 诊断库与 CLI，不移植既有算法库，不复制上一个 Netlink 项目。协议规范引用与 AI 辅助范围已披露。重点是父组共享余量、正确单位的差分和有状态可解释建议，不以解析包壳或测试数量代替工程价值。
+
+输入是可见层级的时间切片：祖先共享用量随时变化，读取不是原子事务；不含 affinity/cpuset；命名空间外约束未知。设备/inode 可识别常见目录重建，但跨主机/重启/长期 inode 复用需要调用方 epoch。缺失 PSI 会阻止自动恢复，ready 仍可能附 missing_pressure。建议不执行资源预留或保证免 OOM。详见 README 与 docs/architecture.md。
+
+总体状态：本地源码、证据、演示、归档消费和申报草稿就绪；公开持续开发要求尚未满足，需用户后续指定发布目标。官方初审、最终验收、获奖均无结果，不能由本复核替代。
