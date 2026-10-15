@@ -1,0 +1,40 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "local/moonpressure/native"
+
+import {
+  "local/moonpressure",
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn collect(String, String) -> Observation raise
+
+pub fn monotonic_us() -> Int64 raise ReadError
+
+pub fn read_text(String) -> String raise
+
+pub fn sleep_ms(Int) -> Unit raise ReadError
+
+// Errors
+pub(all) suberror ReadError {
+  System(String, Int)
+  InvalidPath
+  ChangedDuringRead
+  ClockUnavailable
+} derive(Eq, @debug.Debug)
+pub fn ReadError::equal(Self, Self) -> Bool
+pub fn ReadError::not_equal(Self, Self) -> Bool
+pub fn ReadError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub struct Observation {
+  snapshot : @moonpressure.Snapshot
+  limits : @moonpressure.Budget
+  layers : Array[@moonpressure.Layer]
+  // private fields
+}
+pub fn Observation::to_json(Self, include_raw? : Bool) -> Json
+
+// Type aliases
+
+// Traits

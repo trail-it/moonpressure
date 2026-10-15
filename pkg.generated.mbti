@@ -1,0 +1,233 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "local/moonpressure"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn budget(ArrayView[Layer]) -> Budget raise ParseError
+
+pub fn interval(Snapshot, Snapshot) -> Interval raise DeltaError
+
+pub fn parse_counter(String) -> Int64 raise ParseError
+
+pub fn parse_cpu_max(String) -> CpuMax raise ParseError
+
+pub fn parse_cpu_stat(String) -> CpuStat raise ParseError
+
+pub fn parse_limit(String) -> Limit raise ParseError
+
+pub fn parse_memory_events(String) -> MemoryEvents raise ParseError
+
+pub fn parse_pressure(String) -> Pressure raise ParseError
+
+// Errors
+pub(all) suberror DeltaError {
+  IdentityChanged
+  InvalidInterval
+  CounterReset(String)
+  AvailabilityChanged(String)
+} derive(Eq, @debug.Debug)
+pub fn DeltaError::equal(Self, Self) -> Bool
+pub fn DeltaError::not_equal(Self, Self) -> Bool
+pub fn DeltaError::to_repr(Self) -> @debug.Repr
+
+pub(all) suberror ParseError {
+  Invalid(String)
+} derive(Eq, @debug.Debug)
+pub fn ParseError::equal(Self, Self) -> Bool
+pub fn ParseError::not_equal(Self, Self) -> Bool
+pub fn ParseError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub(all) enum Admission {
+  Ready
+  Shed
+} derive(Eq, @debug.Debug)
+pub fn Admission::equal(Self, Self) -> Bool
+pub fn Admission::label(Self) -> String
+pub fn Admission::not_equal(Self, Self) -> Bool
+pub fn Admission::to_repr(Self) -> @debug.Repr
+
+pub struct Advice {
+  state : Admission
+  reasons : Array[Reason]
+  high_streak : Int
+  low_streak : Int
+} derive(Eq, @debug.Debug)
+pub fn Advice::equal(Self, Self) -> Bool
+pub fn Advice::not_equal(Self, Self) -> Bool
+pub fn Advice::to_json(Self) -> Json
+pub fn Advice::to_repr(Self) -> @debug.Repr
+
+pub struct Budget {
+  quota_cores : Double?
+  hard_headroom_bytes : Int64?
+  high_headroom_bytes : Int64?
+  quota_source : String?
+  hard_source : String?
+  high_source : String?
+} derive(Eq, @debug.Debug)
+pub fn Budget::equal(Self, Self) -> Bool
+pub fn Budget::not_equal(Self, Self) -> Bool
+pub fn Budget::to_json(Self) -> Json
+pub fn Budget::to_repr(Self) -> @debug.Repr
+
+pub struct Controller {
+  // private fields
+}
+pub fn Controller::new(Policy) -> Self
+pub fn Controller::reset(Self) -> Unit
+pub fn Controller::update(Self, Interval, Budget) -> Advice raise DeltaError
+
+pub struct CpuMax {
+  quota : Limit
+  period_us : Int64
+} derive(Eq, @debug.Debug)
+pub fn CpuMax::equal(Self, Self) -> Bool
+pub fn CpuMax::not_equal(Self, Self) -> Bool
+pub fn CpuMax::to_repr(Self) -> @debug.Repr
+
+pub struct CpuStat {
+  usage_us : Int64
+  throttle : Throttle?
+} derive(Eq, @debug.Debug)
+pub fn CpuStat::equal(Self, Self) -> Bool
+pub fn CpuStat::not_equal(Self, Self) -> Bool
+pub fn CpuStat::to_repr(Self) -> @debug.Repr
+
+pub struct Interval {
+  identity : String
+  end_us : Int64
+  elapsed_us : Int64
+  cpu_cores_used : Double
+  throttled_period_percent : Double?
+  throttled_us : Int64?
+  memory_current_bytes : Int64
+  memory_high_events : Int64
+  memory_max_events : Int64
+  oom_events : Int64
+  oom_kills : Int64
+  cpu_stall : StallDelta?
+  memory_stall : StallDelta?
+  io_stall : StallDelta?
+} derive(Eq, @debug.Debug)
+pub fn Interval::equal(Self, Self) -> Bool
+pub fn Interval::not_equal(Self, Self) -> Bool
+pub fn Interval::to_json(Self) -> Json
+pub fn Interval::to_repr(Self) -> @debug.Repr
+
+pub struct Layer {
+  name : String
+  cpu : CpuMax?
+  memory_max : Limit?
+  memory_high : Limit?
+  memory_current : Int64?
+} derive(Eq, @debug.Debug)
+pub fn Layer::equal(Self, Self) -> Bool
+pub fn Layer::not_equal(Self, Self) -> Bool
+pub fn Layer::parse(String, cpu_max? : String, memory_max? : String, memory_high? : String, memory_current? : String) -> Self raise ParseError
+pub fn Layer::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Limit {
+  Unlimited
+  Finite(Int64)
+} derive(Eq, @debug.Debug)
+pub fn Limit::equal(Self, Self) -> Bool
+pub fn Limit::not_equal(Self, Self) -> Bool
+pub fn Limit::to_repr(Self) -> @debug.Repr
+
+pub struct MemoryEvents {
+  high : Int64
+  max : Int64
+  oom : Int64
+  oom_kill : Int64
+} derive(Eq, @debug.Debug)
+pub fn MemoryEvents::equal(Self, Self) -> Bool
+pub fn MemoryEvents::not_equal(Self, Self) -> Bool
+pub fn MemoryEvents::to_repr(Self) -> @debug.Repr
+
+pub struct Policy {
+  enter_percent : Double
+  exit_percent : Double
+  enter_intervals : Int
+  exit_intervals : Int
+  min_headroom_bytes : Int64
+} derive(Eq, @debug.Debug)
+pub fn Policy::equal(Self, Self) -> Bool
+pub fn Policy::new(enter_percent? : Double, exit_percent? : Double, enter_intervals? : Int, exit_intervals? : Int, min_headroom_bytes? : Int64) -> Self raise ParseError
+pub fn Policy::not_equal(Self, Self) -> Bool
+pub fn Policy::to_repr(Self) -> @debug.Repr
+
+pub struct Pressure {
+  some : PressureLine
+  full : PressureLine?
+} derive(Eq, @debug.Debug)
+pub fn Pressure::equal(Self, Self) -> Bool
+pub fn Pressure::not_equal(Self, Self) -> Bool
+pub fn Pressure::to_repr(Self) -> @debug.Repr
+
+pub struct PressureLine {
+  avg10 : Double
+  avg60 : Double
+  avg300 : Double
+  total_us : Int64
+} derive(Eq, @debug.Debug)
+pub fn PressureLine::equal(Self, Self) -> Bool
+pub fn PressureLine::not_equal(Self, Self) -> Bool
+pub fn PressureLine::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Reason {
+  CpuStall
+  MemoryStall
+  IoStall
+  CpuThrottled
+  LowMemoryHeadroom
+  MemoryHigh
+  MemoryMax
+  OutOfMemory
+  Recovering
+  MissingPressure
+} derive(Eq, @debug.Debug)
+pub fn Reason::equal(Self, Self) -> Bool
+pub fn Reason::label(Self) -> String
+pub fn Reason::not_equal(Self, Self) -> Bool
+pub fn Reason::to_repr(Self) -> @debug.Repr
+
+pub struct Snapshot {
+  identity : String
+  time_us : Int64
+  cpu : CpuStat
+  memory_current : Int64
+  events : MemoryEvents
+  cpu_pressure : Pressure?
+  memory_pressure : Pressure?
+  io_pressure : Pressure?
+} derive(Eq, @debug.Debug)
+pub fn Snapshot::equal(Self, Self) -> Bool
+pub fn Snapshot::not_equal(Self, Self) -> Bool
+pub fn Snapshot::parse(String, Int64, cpu_stat~ : String, memory_current~ : String, memory_events~ : String, cpu_pressure? : String, memory_pressure? : String, io_pressure? : String) -> Self raise ParseError
+pub fn Snapshot::to_json(Self) -> Json
+pub fn Snapshot::to_repr(Self) -> @debug.Repr
+
+pub struct StallDelta {
+  some_percent : Double
+  full_percent : Double?
+} derive(Eq, @debug.Debug)
+pub fn StallDelta::equal(Self, Self) -> Bool
+pub fn StallDelta::not_equal(Self, Self) -> Bool
+pub fn StallDelta::to_repr(Self) -> @debug.Repr
+
+pub struct Throttle {
+  periods : Int64
+  throttled_periods : Int64
+  throttled_us : Int64
+} derive(Eq, @debug.Debug)
+pub fn Throttle::equal(Self, Self) -> Bool
+pub fn Throttle::not_equal(Self, Self) -> Bool
+pub fn Throttle::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

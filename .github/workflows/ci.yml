@@ -1,0 +1,32 @@
+name: MoonPressure checks
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install official MoonBit toolchain
+        run: |
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - name: Validate core, APIs and replay
+        run: |
+          moon version --all
+          moon fmt --check
+          moon check --target wasm-gc --deny-warn --warn-list +73
+          moon test --target wasm --deny-warn
+          moon test --target wasm-gc --deny-warn
+          moon test --target js --deny-warn
+          python3 scripts/verify_replay.py wasm wasm-gc js
+      - name: Validate Linux collector and oracle
+        run: |
+          moon check --target native --deny-warn
+          moon test --target native --deny-warn
+          moon build --target native --release --deny-warn
+          python3 scripts/verify_replay.py native
+          python3 scripts/verify_linux.py
+      - name: Validate actual package consumer
+        run: python3 scripts/verify_package.py

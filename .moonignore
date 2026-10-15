@@ -1,0 +1,13 @@
+_build/
+target/
+research/
+release-local/
+demo-output/
+tmp/
+__pycache__/
+*.pyc
+.git/
+.github/
+.local-ledger.md
+output/
+scripts/windows-env.ps1

@@ -16,8 +16,8 @@ fn main raise {
     guard args.length() >= 6 else { abort("watch requires COUNT DELAY_MS") }
     let count64 = @pressure.parse_counter(args[4])
     let delay64 = @pressure.parse_counter(args[5])
-    guard count64 >= 2L && count64 <= 120L && delay64 >= 1L && delay64 <= 60000L else {
-      abort("COUNT must be 2..120; DELAY_MS must be 1..60000")
+    guard count64 >= 2L && count64 <= 120L && delay64 >= 1L && delay64 <= 59000L else {
+      abort("COUNT must be 2..120; DELAY_MS must be 1..59000")
     }
     let controller = @pressure.Controller::new(@pressure.Policy::new())
     let mut previous = @native.collect(args[2], args[3])
