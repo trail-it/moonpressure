@@ -1,0 +1,9 @@
+supported_targets = "native"
+
+import {
+  "local/moonpressure" @pressure,
+  "local/moonpressure/native",
+  "moonbitlang/core/env",
+}
+
+pkgtype(kind: "executable")

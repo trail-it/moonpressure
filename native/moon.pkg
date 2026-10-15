@@ -1,0 +1,10 @@
+supported_targets = "native"
+
+import {
+  "local/moonpressure",
+  "moonbitlang/core/encoding/utf8",
+}
+
+options(
+  "native-stub": [ "bridge.c" ],
+)
