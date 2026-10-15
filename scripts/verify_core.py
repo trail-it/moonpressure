@@ -3,7 +3,10 @@ import json, pathlib, platform, re, subprocess, sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 
 def run(*args):
-    p=subprocess.run(args,cwd=ROOT,check=True,capture_output=True,text=True,encoding='utf8',timeout=180)
+    p=subprocess.run(args,cwd=ROOT,capture_output=True,text=True,encoding='utf8',timeout=180)
+    if p.returncode:
+        print((p.stdout+p.stderr)[-4000:],file=sys.stderr)
+        p.check_returncode()
     print(p.stdout,end='')
     return p.stdout+p.stderr
 
