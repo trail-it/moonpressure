@@ -1,3 +1,14 @@
 {
-  "state": "local archive validation being finalized"
+  "version": "0.1.0",
+  "module": "local/moonpressure",
+  "source": "actual local zip extracted into isolated workspace",
+  "archive_files": 48,
+  "consumer_tests": {
+    "wasm": 1,
+    "wasm-gc": 1,
+    "js": 1,
+    "native": 1
+  },
+  "registry_installation": "not performed",
+  "native_bridge_compiled_and_real_cgroup_called": true
 }
