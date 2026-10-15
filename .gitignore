@@ -1,0 +1,9 @@
+_build/
+target/
+research/
+release-local/
+demo-output/
+tmp/
+__pycache__/
+*.pyc
+.local-ledger.md
