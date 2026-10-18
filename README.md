@@ -32,7 +32,7 @@ Windows 当前工作副本已在忽略目录准备匹配的工具链，PowerShel
 
 导入本地模块为 `@pressure`。使用 `Layer::parse` 加载叶节点和可见祖先的 `cpu.max`、`memory.max`、`memory.high`、`memory.current` 文本，调用 `budget(layers)` 得到约束。父节点必须传入父节点自身的 `memory.current`，其中包含兄弟节点消耗。
 
-用 `Snapshot::parse` 构造同一 cgroup 世代的快照；`interval(previous, current)` 计算差分。`Controller::new(Policy::new())` 接收连续区间，`update(interval, budget)` 返回建议。完整可编译示例见 `examples/replay/main.mbt`；公开 API 见 `pkg.generated.mbti`，更多契约见 `docs/architecture.md`。
+用 `Snapshot::parse` 构造同一 cgroup 世代的快照；`interval(previous, current)` 计算差分。`Controller::new(Policy::new())` 接收连续区间，`update(interval, budget)` 返回建议。完整可编译示例见 `examples/replay/main.mbt`；公开 API 见 `pkg.generated.mbti`，更多契约见 `docs/architecture.md`；手算和演示导读见 [参赛者理解导读](docs/participant-guide.md)。
 
 默认策略：PSI some 或 CPU 节流周期占比达到 20%，连续两区间进入 `shed`；所有可用压力指标不超过 5%，连续三区间恢复。内存余量不超过 64 MiB、`memory.high/max` 事件也参与判断；OOM 事件立即降载。参数均可调整，这些是启发式阈值。
 
@@ -65,7 +65,7 @@ python3 scripts/verify_linux.py        # Linux cgroup v2 环境
 python3 scripts/verify_package.py      # 实际 zip 归档的隔离消费者
 ```
 
-截至 2026-10-15：16 项库测试在 Windows wasm/wasm-gc/js 和 Linux native 通过；Linux 真实采样与独立 Python 原始文本 oracle 一致。完整状态与归档验证见 `docs/release.md`、`docs/acceptance-review.md`。CI 配置已准备，尚未有远端运行结果。
+2026-10-18：18 项库/文档测试在 Windows wasm/wasm-gc/js 和 Linux wasm/wasm-gc/js/native 通过，包含中间压力打断恢复、缺失 PSI 保持 OOM 降载的回归。10/15 的 Linux 真实采样与独立 Python 原始文本 oracle 证据继续保留。完整状态与归档验证见 `docs/release.md`、`docs/acceptance-review.md`。CI 配置已准备，尚未有远端运行结果。
 
 ## 工程边界
 
@@ -76,5 +76,7 @@ python3 scripts/verify_package.py      # 实际 zip 归档的隔离消费者
 - cgroup 身份由设备号和 inode 识别，用于检测常见删除重建；inode 长期复用或跨系统重放需调用方提供更完整世代标识。
 - 本版本不注册 PSI poll、不控制内核、不自动执行降载；没有进行人为 CPU/内存压力、真实 OOM 或掉电实验。
 - 每个文本最多 64 KiB，层级最多 256，十进制计数器范围为非负 Int64。JSON schema 1 中 Int64 均为十进制字符串，缺省值为 `null`，保留超过 2^53 的精度。
+
+相邻实现的已核实重叠与新增贡献见 [10/18 源码补核](docs/ecosystem-supplement-2026-10-18.md)。sysinfo 已有 cgroup 内存查询，本项目新增在祖先预算、PSI/节流差分和准入状态。
 
 来源、许可与 AI 辅助范围见 `THIRD_PARTY.md`、`AI_USAGE.md`。申报正文为 `submission-proposal.md`；PDF 在本地 `output/pdf/`，不进入库包归档。

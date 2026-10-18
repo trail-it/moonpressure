@@ -1,32 +1,38 @@
 # 验收准备复核
 
-材料日期：2026-10-15。项目 MoonPressure 0.1.0，临时模块 `local/moonpressure`，本地分支 main。GitHub owner/repo、真实 Git 提交身份、Mooncakes 账号/namespace、参赛者/队员均待定。本地中性 Git 身份不是正式贡献归属。
+更新日期：2026-10-18；10/15 验证保留为历史基线。项目 MoonPressure 0.1.0，临时模块 `local/moonpressure`，本地分支 main。GitHub owner/repo、真实 Git 提交身份、Mooncakes 账号/namespace、参赛者/队员均待定。本地中性 Git 身份不是正式贡献归属。
 
 ## 当期规则
 
-官方页面 https://moonbitlang.github.io/Hackathon2026/ 依赖 JS；2026-10-15 实际读取官方仓库正文 https://github.com/moonbitlang/Hackathon2026/blob/main/src/App.tsx ，获取方式为 raw GitHub，原件留在忽略的 research/。十月报名和验收截止 2026-10-31、最多提交 3 次、每队至多 3 人、MoonBit 主体、公开连续开发、可复现测试/演示与开源合规。未自行解释申报次数的适用主体，未执行任何报名。
+官方页面 https://moonbitlang.github.io/Hackathon2026/ 依赖 JS；2026-10-15 初读、2026-10-18 再次读取官方仓库正文 https://github.com/moonbitlang/Hackathon2026/blob/main/src/App.tsx ，获取方式为 raw GitHub，原件留在忽略的 research/。十月报名和验收截止 2026-10-31、最多提交 3 次、每队至多 3 人、MoonBit 主体、公开连续开发、可复现测试/演示与开源合规。未自行解释申报次数的适用主体，未执行任何报名。
 
 ## 分项证据
 
 |项目|证据与实际结果|状态|
 |---|---|---|
-|独立需求和生态去重|根目录四份报告；取得 3019 条 registry 元数据并检索。响度/Wasm 两候选被淘汰。部分 sysinfo/subproc 源码请求失败，保留竞争风险|本地完成|
+|独立需求和生态去重|初选 3019 条；10/18 索引 3088 条。已读取 sysinfo@0.1.6/subproc@0.3.0 发布源码，核实 cgroup 内存重叠与新增边界；见 ecosystem-supplement-2026-10-18.md|本地完成|
 |MoonBit 主体|根包解析、层级归约、差分、状态机、JSON；native MoonBit 遍历/组装；C 仅 I/O/stat/clock/sleep|完成|
-|工具链|Windows/Linux 均 moon 0.1.20261012、moonc v0.10.15+943464bfa；具体脱敏输出见 test-evidence/*-core.json|完成|
+|工具链|Windows/Linux 均 moon 0.1.20261012、moonc v0.10.15+943464bfa；具体脱敏输出见 test-evidence/*-core-2026-10-18.json|完成|
 |格式/检查/构建|fmt --check、check（+73/deny-warn）、release build（deny-warn）；Windows wasm/wasm-gc/js，Linux 再含 native|通过|
-|库与文档测试|每个承诺后端 16 项；不将同一套跨后端运行累计为新增测试|通过|
+|库与文档测试|每个承诺后端 18 项（10/15 基线为16）；新增中间压力打断恢复与缺失 PSI 保持 OOM 降载；不将同一套跨后端运行累计为新增测试|通过|
 |演示|每后端 5 个 synthetic 区间，独立手算 oracle，状态 ready/shed/shed/shed/ready，跨后端一致|通过|
-|真实 Linux 能力|Linux 7.0.0-38-generic，实际 cgroup v2 三次观察/两个区间；Python 从同次读取文本独立解析、核对预算和差分|通过|
+|真实 Linux 能力|10/15 实测 Linux 7.0.0-38-generic，实际 cgroup v2 三次观察/两个区间；Python 从同次读取文本独立解析、核对预算和差分|通过|
 |真实验证边界|没有写 cgroup、没有制造真实 OOM/压力；降载/恢复情景由明确 synthetic trace 验证|如实披露|
 |错误路径|计数溢出、PSI 重复/缺项、部分 throttle、身份/计数回退、时间/gap、重复区间；原生必需文件缺失/超大读取/路径越界等|通过|
 |公开 API|根 pkg.generated.mbti 与 native/pkg.generated.mbti；后者来自显式 native 目标。独立消费者从包内调用|完成|
 |归档消费|实际 moon package zip，隔离 moon.work 使用解包库；消费者新增 1 项测试，Linux 再从包编译 C 桥并实际调用 cgroup|通过，见 test-evidence/linux-consumer.json|
-|许可证/来源/AI|MIT、THIRD_PARTY.md、AI_USAGE.md；original synthetic fixture，主机 raw 不分发|完成；参赛者理解仍待本人复核|
+|许可证/来源/AI|MIT、THIRD_PARTY.md、AI_USAGE.md；original synthetic fixture，主机 raw 不分发|来源/AI说明完成；participant-guide.md 已提供手算与演示导读，本人复核仍待完成|
 |申报与展示|submission-proposal.md、本地一页 PDF、docs/demo.md|本地草稿|
 |公开仓库、持续公开记录|本地保留真实功能阶段历史；无远程地址，无上传授权|待发布，不能冒充已满足公开要求|
 |正式包/registry 安装|临时模块名仅用于本地包验证；未上传 Mooncakes|待发布|
 |远端 CI|.github/workflows/ci.yml 已准备；滚动官方工具链、实际版本写日志，尚无在线结果|待发布|
 |报名/入群/官方审核|未执行，未填写真实个人资料|未开始|
+
+## 10/18 完善与剩余项
+
+两个既有源码访问缺口已用 registry 的确切发布归档补齐；未取得 GitHub 最近提交/Issues 不能冒称已核实。一般 cgroup 内存查询已有实现，本项目新增贡献限定为多层预算、区间压力和准入状态。新增两项端到端状态回归及带答案的理解导读。
+
+本地可控缺项已补齐；参赛者独立讲解/复现仍须本人完成，公开持续开发、真实身份、发布和官方报名/审核仍须实际操作。一次性上传不会自动补成此前公开开发过程。CI/registry 消费是项目交付验证，不将其冒称官网逐项硬门槛。
 
 ## 新增贡献和限制
 

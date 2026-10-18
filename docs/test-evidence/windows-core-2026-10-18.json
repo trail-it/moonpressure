@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-18",
+  "platform": "Windows",
+  "toolchain": [
+    "moon 0.1.20261012 (748b63c 2026-10-12)",
+    "moonc v0.10.15+943464bfa (2026-10-12)",
+    "moonrun 0.1.20261012 (748b63c 2026-10-12)"
+  ],
+  "library_and_documentation_tests": {
+    "wasm": 18,
+    "wasm-gc": 18,
+    "js": 18
+  },
+  "format_check": "passed",
+  "check_build_deny_warn": "passed",
+  "replay_intervals_per_backend": 5,
+  "replay_hand_oracle_and_cross_backend": "passed"
+}
