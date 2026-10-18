@@ -1,6 +1,6 @@
 # 验收准备复核
 
-更新日期：2026-10-18；10/15 验证保留为历史基线。项目 MoonPressure 0.1.0，临时模块 `local/moonpressure`，本地分支 main。GitHub owner/repo、真实 Git 提交身份、Mooncakes 账号/namespace、参赛者/队员均待定。本地中性 Git 身份不是正式贡献归属。
+更新日期：2026-10-18；10/15 验证保留为历史基线。项目 MoonPressure 0.1.0，正式模块目标 `trail-it/moonpressure`，分支 main。用户已指定 GitHub owner/上传身份 trail-it；发布准备提交使用该账号的官方 noreply 身份。Mooncakes 必须完成同名登录核对。报名所需个人资料及队员尚未提供；此前中性本地历史保留。
 
 ## 当期规则
 
@@ -23,8 +23,8 @@
 |归档消费|实际 moon package zip，隔离 moon.work 使用解包库；消费者新增 1 项测试，Linux 再从包编译 C 桥并实际调用 cgroup|通过，见 test-evidence/linux-consumer.json|
 |许可证/来源/AI|MIT、THIRD_PARTY.md、AI_USAGE.md；original synthetic fixture，主机 raw 不分发|来源/AI说明完成；participant-guide.md 已提供手算与演示导读，本人复核仍待完成|
 |申报与展示|submission-proposal.md、本地一页 PDF、docs/demo.md|本地草稿|
-|公开仓库、持续公开记录|本地保留真实功能阶段历史；无远程地址，无上传授权|待发布，不能冒充已满足公开要求|
-|正式包/registry 安装|临时模块名仅用于本地包验证；未上传 Mooncakes|待发布|
+|公开仓库、持续公开记录|已获授权发布至 trail-it/moonpressure；保留原始本地阶段历史，首次公开时间以实际推送为准|发布执行中，不倒填公开时间|
+|正式包/registry 安装|已迁移为 trail-it/moonpressure；确切版本待同名账号发布与registry消费|待发布|
 |远端 CI|.github/workflows/ci.yml 已准备；滚动官方工具链、实际版本写日志，尚无在线结果|待发布|
 |报名/入群/官方审核|未执行，未填写真实个人资料|未开始|
 
@@ -40,4 +40,4 @@
 
 输入是可见层级的时间切片：祖先共享用量随时变化，读取不是原子事务；不含 affinity/cpuset；命名空间外约束未知。设备/inode 可识别常见目录重建，但跨主机/重启/长期 inode 复用需要调用方 epoch。缺失 PSI 会阻止自动恢复，ready 仍可能附 missing_pressure。建议不执行资源预留或保证免 OOM。详见 README 与 docs/architecture.md。
 
-总体状态：本地源码、证据、演示、归档消费和申报草稿就绪；公开持续开发要求尚未满足，需用户后续指定发布目标。官方初审、最终验收、获奖均无结果，不能由本复核替代。
+总体状态：本地技术和材料就绪，用户已授权 trail-it 发布；GitHub/CI/Mooncakes 的实际结果以 release.md 后续记录为准。官方初审、最终验收、获奖均无结果，不能由本复核替代。

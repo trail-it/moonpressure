@@ -4,7 +4,11 @@ MoonPressure 为 MoonBit 应用提供 Linux cgroup v2 资源压力诊断和队�
 
 适用场景：在容器或 systemd 服务中运行编译队列、AI 工具任务和后台作业。宿主 CPU 利用率不能反映容器节流；叶节点 `memory.max=max` 仍可能受父级共享预算约束。
 
-**0.1.0 本地交付，尚未发布。** `local/moonpressure` 是临时模块名，公开 owner、仓库、namespace 与参赛者身份待指定。MIT。规则、竞争分析及方案见根目录四份报告。
+**MoonPressure 0.1.0，MIT。** 正式目标为 [trail-it/moonpressure](https://github.com/trail-it/moonpressure)，Mooncakes 模块为 `trail-it/moonpressure`。当前发布核验状态见 [交付记录](docs/release.md)；规则、竞争分析及方案见根目录报告。
+
+```sh
+moon add trail-it/moonpressure@0.1.0
+```
 
 ## 三分钟体验
 
@@ -30,7 +34,7 @@ Windows 当前工作副本已在忽略目录准备匹配的工具链，PowerShel
 
 ## 嵌入应用
 
-导入本地模块为 `@pressure`。使用 `Layer::parse` 加载叶节点和可见祖先的 `cpu.max`、`memory.max`、`memory.high`、`memory.current` 文本，调用 `budget(layers)` 得到约束。父节点必须传入父节点自身的 `memory.current`，其中包含兄弟节点消耗。
+在 moon.pkg 中导入 `"trail-it/moonpressure" @pressure`。使用 `Layer::parse` 加载叶节点和可见祖先的 `cpu.max`、`memory.max`、`memory.high`、`memory.current` 文本，调用 `budget(layers)` 得到约束。父节点必须传入父节点自身的 `memory.current`，其中包含兄弟节点消耗。
 
 用 `Snapshot::parse` 构造同一 cgroup 世代的快照；`interval(previous, current)` 计算差分。`Controller::new(Policy::new())` 接收连续区间，`update(interval, budget)` 返回建议。完整可编译示例见 `examples/replay/main.mbt`；公开 API 见 `pkg.generated.mbti`，更多契约见 `docs/architecture.md`；手算和演示导读见 [参赛者理解导读](docs/participant-guide.md)。
 
@@ -79,4 +83,4 @@ python3 scripts/verify_package.py      # 实际 zip 归档的隔离消费者
 
 相邻实现的已核实重叠与新增贡献见 [10/18 源码补核](docs/ecosystem-supplement-2026-10-18.md)。sysinfo 已有 cgroup 内存查询，本项目新增在祖先预算、PSI/节流差分和准入状态。
 
-来源、许可与 AI 辅助范围见 `THIRD_PARTY.md`、`AI_USAGE.md`。申报正文为 `submission-proposal.md`；PDF 在本地 `output/pdf/`，不进入库包归档。
+来源、许可与 AI 辅助范围见 `THIRD_PARTY.md`、`AI_USAGE.md`。申报正文为 `submission-proposal.md`；[一页申报 PDF](https://github.com/trail-it/moonpressure/blob/main/output/pdf/MoonPressure-proposal-0.1.0.pdf) 在 GitHub 提供，不进入库包归档。上传边界见 [分发清单](docs/distribution.md)。

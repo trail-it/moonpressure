@@ -7,3 +7,5 @@ tmp/
 __pycache__/
 *.pyc
 .local-ledger.md
+credentials.json
+.env

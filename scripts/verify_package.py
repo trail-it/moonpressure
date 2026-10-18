@@ -1,11 +1,8 @@
-"""Exercise public APIs from the actual zip, using an isolated local workspace.
-
-This verifies archive consumption, not registry installation or publication.
-"""
-import json, pathlib, re, subprocess, sys, tempfile, zipfile
+"""Exercise public APIs from an actual zip or an exact public registry version."""
+import argparse, json, pathlib, re, subprocess, sys, tempfile, zipfile
 
 ROOT=pathlib.Path(__file__).resolve().parents[1]
-MODULE='local/moonpressure'
+MODULE='trail-it/moonpressure'
 
 def run(*args,cwd=ROOT):
     p=subprocess.run(list(map(str,args)),cwd=cwd,check=True,capture_output=True,text=True,encoding='utf8',timeout=180)
@@ -17,22 +14,30 @@ def write(path,text):
     path.write_text(text,encoding='utf8')
 
 def main():
-    version=re.search(r'^version\s*=\s*"([^"]+)"',(ROOT/'moon.mod').read_text(),re.M)[1]
-    run('moon','package')
-    archive=ROOT/'_build/publish'/f'local-moonpressure-{version}.zip'
+    parser=argparse.ArgumentParser()
+    parser.add_argument('--registry-version',help='Install this exact released version without a local workspace override')
+    args=parser.parse_args()
+    version=args.registry_version or re.search(r'^version\s*=\s*"([^"]+)"',(ROOT/'moon.mod').read_text(),re.M)[1]
     base=ROOT/'_build/package-consumers';base.mkdir(parents=True,exist_ok=True)
     work=pathlib.Path(tempfile.mkdtemp(prefix='consumer-',dir=base))
-    with zipfile.ZipFile(archive) as z:
-        names=z.namelist()
-        assert all(not pathlib.PurePosixPath(n).is_absolute() and '..' not in pathlib.PurePosixPath(n).parts for n in names)
-        blocked={'research','release-local','demo-output','tmp','.git','.github','output','credentials.json','node_modules'}
-        assert not any(p in blocked for n in names for p in pathlib.PurePosixPath(n).parts)
-        for file in ['moon.mod','moon.pkg','native/bridge.c','native/moon.pkg','native/pkg.generated.mbti','pkg.generated.mbti','LICENSE','README.md']:
-            assert file in names,('missing archive file',file)
-        z.extractall(work/'library')
-    write(work/'moon.work','members = ["library", "consumer"]\n')
+    names=[]
+    if not args.registry_version:
+        run('moon','package')
+        archive=ROOT/'_build/publish'/f'trail-it-moonpressure-{version}.zip'
+        with zipfile.ZipFile(archive) as z:
+            names=z.namelist()
+            assert all(not pathlib.PurePosixPath(n).is_absolute() and '..' not in pathlib.PurePosixPath(n).parts for n in names)
+            blocked={'research','release-local','demo-output','tmp','.git','.github','output','credentials.json','node_modules'}
+            assert not any(p in blocked for n in names for p in pathlib.PurePosixPath(n).parts)
+            for file in ['moon.mod','moon.pkg','native/bridge.c','native/moon.pkg','native/pkg.generated.mbti','pkg.generated.mbti','LICENSE','README.md']:
+                assert file in names,('missing archive file',file)
+            z.extractall(work/'library')
+        write(work/'moon.work','members = ["library", "consumer"]\n')
     consumer=work/'consumer'
     write(consumer/'moon.mod',f'name = "acceptance/pressure-consumer"\nversion = "0.0.1"\nimport {{ "{MODULE}@{version}" }}\n')
+    if args.registry_version:
+        assert not (work/'moon.work').exists()
+        run('moon','-C',consumer,'add',f'{MODULE}@{version}')
     write(consumer/'moon.pkg',f'import {{ "{MODULE}" @pressure }} for "test"\n')
     write(consumer/'api_test.mbt',r'''///|
 test "packaged public APIs enforce parent budget and OOM admission" {
@@ -60,7 +65,8 @@ test "packaged public APIs enforce parent budget and OOM admission" {
     targets=['wasm','wasm-gc','js']
     if sys.platform.startswith('linux'):targets.append('native')
     for target in targets:run('moon','-C',consumer,'test','--target',target,'--deny-warn')
-    result={'version':version,'module':MODULE,'source':'actual local zip extracted into isolated workspace','archive_files':len(names),'consumer_tests':{t:1 for t in targets},'registry_installation':'not performed'}
+    result={'version':version,'module':MODULE,'source':'public registry exact version' if args.registry_version else 'actual local zip extracted into isolated workspace','consumer_tests':{t:1 for t in targets},'registry_installation':version if args.registry_version else 'not performed'}
+    if not args.registry_version:result['archive_files']=len(names)
     if sys.platform.startswith('linux'):
         write(consumer/'probe/moon.pkg',f'import {{ "{MODULE}/native", "moonbitlang/core/env" }}\nsupported_targets = "native"\noptions("is-main": true)\n')
         write(consumer/'probe/main.mbt','''///|
@@ -75,8 +81,8 @@ fn main raise {
         probe=json.loads(run('moon','-C',consumer,'run','probe','--target','native','--','/sys/fs/cgroup',group))
         assert probe['linux_cgroup_read']
         result['native_bridge_compiled_and_real_cgroup_called']=True
-    write(ROOT/'demo-output/consumer-archive.json',json.dumps(result,indent=2)+'\n')
-    write(ROOT/'release-local/package-files.txt','\n'.join(names)+'\n')
+    write(ROOT/'demo-output'/('consumer-registry.json' if args.registry_version else 'consumer-archive.json'),json.dumps(result,indent=2)+'\n')
+    if names:write(ROOT/'release-local/package-files.txt','\n'.join(names)+'\n')
     print(json.dumps(result,indent=2))
 
 if __name__=='__main__':main()

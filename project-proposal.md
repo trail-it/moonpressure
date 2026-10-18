@@ -33,3 +33,7 @@ MVP：PSI some/full；cpu.max、cpu.stat、memory.current/max/high/events；逐�
 ## 2026-10-18 完善
 
 已从 registry 读取 sysinfo@0.1.6/subproc@0.3.0 发布源码，核实 cgroup 内存查询重叠与新增边界，详见 docs/ecosystem-supplement-2026-10-18.md。增加参赛者导读及“中间压力打断恢复/缺失 PSI 不恢复 OOM 降载”的两项端到端状态回归。本轮没有扩展产品功能或执行发布。
+
+## 发布身份（2026-10-18）
+
+用户已明确授权以 trail-it 上传 GitHub 并发布 Mooncakes；目标为 trail-it/moonpressure。前文的待指定/仅本地状态为最初范围记录，当前以 docs/release.md 和 docs/distribution.md 为准。保留真实本地开发历史，不倒填公开日期或虚构报名结果。

@@ -1,6 +1,6 @@
 # Executable API example
 
-The module name is a local placeholder. This example is compiled as a black-box test.
+The published module is `trail-it/moonpressure`. This example is compiled as a black-box test.
 
 ```mbt check
 ///|

@@ -1,9 +1,9 @@
 // Generated using `moon info`, DON'T EDIT IT
-package "local/moonpressure/native"
+package "trail-it/moonpressure/native"
 
 import {
-  "local/moonpressure",
   "moonbitlang/core/debug",
+  "trail-it/moonpressure",
 }
 
 // Values

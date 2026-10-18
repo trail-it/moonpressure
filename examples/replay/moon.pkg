@@ -1,5 +1,5 @@
 import {
-  "local/moonpressure" @pressure,
+  "trail-it/moonpressure" @pressure,
 }
 
 pkgtype(kind: "executable")

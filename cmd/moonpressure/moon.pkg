@@ -1,8 +1,8 @@
 supported_targets = "native"
 
 import {
-  "local/moonpressure" @pressure,
-  "local/moonpressure/native",
+  "trail-it/moonpressure" @pressure,
+  "trail-it/moonpressure/native",
   "moonbitlang/core/env",
 }
 

@@ -11,3 +11,5 @@ __pycache__/
 .local-ledger.md
 output/
 scripts/windows-env.ps1
+credentials.json
+.env
