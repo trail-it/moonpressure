@@ -1,6 +1,16 @@
-# 本地交付记录
+# 交付与发布记录
 
-项目：MoonPressure 0.1.0。更新日期：2026-10-18。状态：trail-it 发布准备中。仓库目标 [trail-it/moonpressure](https://github.com/trail-it/moonpressure)，正式模块 `trail-it/moonpressure@0.1.0`。当前提交使用已核实 GitHub 账号的 noreply 身份；此前中性本地阶段历史保留原样。Mooncakes 同名登录及实际发布/CI结果在完成后单独记录。
+项目：MoonPressure 0.1.0。更新日期：2026-10-18。公开仓库 [trail-it/moonpressure](https://github.com/trail-it/moonpressure)，默认分支 main；[Mooncakes 0.1.0](https://mooncakes.io/docs/trail-it/moonpressure@0.1.0) 已由核实为 trail-it 的 CLI 账号发布，并完成确切版本独立消费。当前提交使用已核实 GitHub 账号的 noreply 身份；此前中性本地阶段历史保留原样。
+
+## 公开发布证据
+
+- 仓库创建时间：2026-10-18 07:05:09 UTC（北京时间 15:05:09）；首次公开在此次授权之后，不把 10/15 的本地阶段说成公开开发。
+- 代码冻结提交：`011ea05e2e0b3831419f2d69730744395d2025fe`。
+- 该提交的 [GitHub Actions CI](https://github.com/trail-it/moonpressure/actions/runs/39106369889) 已成功，包含核心后端、Linux 原生采集与独立 oracle、实际归档消费者。
+- Mooncakes 0.1.0 发布时间：2026-10-18 07:19:49 UTC（北京时间 15:19:49）；registry 构建状态 success。元数据的许可证、仓库、版本均核对一致。
+- Windows 的 wasm/wasm-gc/js、Linux 的 wasm/wasm-gc/js/native 分别通过独立消费模块的 1 项 API 测试；下载依赖的 moon.mod 确认为 0.1.0，所有祖先目录无 moon.work 覆盖。Linux 从下载包编译 C 桥并实读 cgroup。
+- 实际上传 zip 共 54 文件，SHA-256 与 registry checksum 一致；见 test-evidence/publication-0.1.0.json。上传包内文档保留发布前快照，最终发布记录以 GitHub main 为准。
+- 版本入口：[v0.1.0 release](https://github.com/trail-it/moonpressure/releases/tag/v0.1.0)。最终材料提交仅更新说明、PDF 与脱敏发布证据，包代码仍对应上述冻结提交；最终 main 的检查见 [Actions](https://github.com/trail-it/moonpressure/actions/workflows/ci.yml?query=branch%3Amain)。
 
 ## 已交付
 
@@ -15,10 +25,11 @@
 |synthetic replay|每后端 5 个区间，独立手算 oracle 与跨后端比较一致|scripts/verify_replay.py|
 |10/15 Linux 真实采集|三次观察/两个区间，独立 raw-text oracle 对预算/指标/差分核对通过|test-evidence/linux.json|
 |实际本地归档消费者|独立 workspace 增加 1 项 API 测试；Linux 从解包源码编译 C 并读真实 cgroup|test-evidence/linux-consumer.json|
+|公开 registry 确切版本消费|Windows 三后端、Linux 四后端各 1 项消费者测试；Linux 从下载包编译 C 并读真实 cgroup|test-evidence/windows-registry-0.1.0.json、linux-registry-0.1.0.json|
 
-本轮消费者工具输出 19 tests，即依赖库/文档 18 + 消费者 1；不能将其宣称为 19 项新增库测试。10/15 的16项基线记录保留，未倒改旧测试结果。源码功能检查与归档消费是不同证据，均不等于公开 registry 安装。
+本地归档消费者工具输出 19 tests，即依赖库/文档 18 + 消费者 1；不能将其宣称为 19 项新增库测试。registry 消费者每后端输出 1 项测试。10/15 的16项基线记录保留，未倒改旧测试结果。源码检查、本地归档与公开 registry 安装分别记录。
 
-实测工具链：moon 0.1.20261012 (748b63c 2026-10-12)、moonc v0.10.15+943464bfa、moonrun 0.1.20261012。Windows 使用项目忽略目录中的匹配工具链，Linux 使用已准备好的同版工具链。工具链与缓存不分发。CI 使用官方安装器的滚动版本并记录实际版本；尚未在远端执行，不把本地验证称为 CI 成功。
+实测工具链：moon 0.1.20261012 (748b63c 2026-10-12)、moonc v0.10.15+943464bfa、moonrun 0.1.20261012。Windows 使用项目忽略目录中的匹配工具链，Linux 使用已准备好的同版工具链。工具链与缓存不分发。CI 使用官方安装器的滚动版本并记录实际版本；远端结果对应上面列出的提交，后续材料提交须另行核对其最终 CI。
 
 本地真实内核为 Linux 7.0.0-38-generic，不把 synthetic 情景冒充实际资源压力。没有写内核控制文件、制造真实 OOM 或对服务施加压力。读取/cgroup 身份与内存预算的局限见 README。
 
@@ -26,7 +37,7 @@
 
 `moon package` 生成 `_build/publish/trail-it-moonpressure-0.1.0.zip`；`scripts/verify_package.py` 检查实际 zip 文件清单、必要 C 桥和接口，并解包到隔离 workspace 消费。私有目录 research/release-local/demo-output、工具链、构建目录、Git 元数据与 PDF 不入库归档。实际文件数及消费者结果保留在 test-evidence/package.json；它记录本地档案，不是上传记录。
 
-GitHub 的拟分发内容额外包含 CI 配置与本地申报 PDF。已检查跟踪清单、暂存差异与本地历史：无原始主机采样、凭据文件、SSH 配置、本机工具链或其他项目文件。针对实际文本扫描私钥/token 模式，范围与限制保留在脱敏交付记录；这不等于保证检出所有秘密。
+GitHub 已分发内容额外包含 CI 配置与申报 PDF。上传前检查了 60 个跟踪文件、77 个可达历史 blob 和 54 文件的实际包归档；无原始主机采样、凭据文件、SSH 配置、本机工具链或其他项目文件。针对实际文本扫描私钥/token 模式未发现匹配；这不等于保证检出所有秘密。54 是发布准备归档的文件数，不是 Mooncakes 上传记录，旧 test-evidence/package.json 保留其原始本地归档证据。
 
 ## 本次发布授权与阶段
 

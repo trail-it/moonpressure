@@ -12,7 +12,7 @@
 核心为纯 MoonBit：类型化解析、父组共享内存余量、CPU quota 上界、身份/计数器重置检查、OOM 增量与连续高低压状态机、JSON。Linux C 桥仅负责只读 I/O、stat、时钟和 sleep；不自动修改内核或终止任务。
 
 ## 可复现验证
-2026-10-12 工具链；Windows 三后端、Linux 四后端各 18 项库/文档测试与 check/build/格式通过。synthetic 演示五区间跨后端一致。10/15 真实 Linux cgroup 三次观察/两个差分区间通过独立 Python 原始文本 oracle；实际 zip 在独立消费者中通过 API 测试，并从归档编译 C 桥实调 cgroup。
+2026-10-12 工具链；Windows 三后端、Linux 四后端各 18 项库/文档测试与 check/build/格式通过。synthetic 演示五区间跨后端一致。10/15 真实 Linux cgroup 三次观察/两个差分区间通过独立 Python 原始文本 oracle。实际归档与 Mooncakes 0.1.0 下载包分别通过独立消费者验证；Linux 从下载包编译 C 桥实调 cgroup。公开代码冻结提交 011ea05 的 [远端 CI](https://github.com/trail-it/moonpressure/actions/runs/39106369889) 已通过；发布后结果见 docs/release.md。
 
 ## 来源、AI 与责任
 MIT，引用 Linux 官方 cgroup/PSI 规范，无第三方实现源码移植；synthetic 输入为原创。Codex 辅助调研、实现、测试与材料，提供手算、代码/测试入口和演示导读，参赛者须本人复核架构、单位、状态机及限制；人工理解尚待本人确认。

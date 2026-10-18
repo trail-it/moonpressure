@@ -1,6 +1,6 @@
 # 验收准备复核
 
-更新日期：2026-10-18；10/15 验证保留为历史基线。项目 MoonPressure 0.1.0，正式模块目标 `trail-it/moonpressure`，分支 main。用户已指定 GitHub owner/上传身份 trail-it；发布准备提交使用该账号的官方 noreply 身份。Mooncakes 必须完成同名登录核对。报名所需个人资料及队员尚未提供；此前中性本地历史保留。
+更新日期：2026-10-18；10/15 验证保留为历史基线。项目 MoonPressure 0.1.0，正式模块 `trail-it/moonpressure`，分支 main。GitHub owner/上传身份和 Mooncakes 发布账号均已核实为 trail-it；发布提交使用该账号的官方 noreply 身份。报名所需个人资料及队员尚未提供；此前中性本地历史保留。
 
 ## 当期规则
 
@@ -22,17 +22,17 @@
 |公开 API|根 pkg.generated.mbti 与 native/pkg.generated.mbti；后者来自显式 native 目标。独立消费者从包内调用|完成|
 |归档消费|实际 moon package zip，隔离 moon.work 使用解包库；消费者新增 1 项测试，Linux 再从包编译 C 桥并实际调用 cgroup|通过，见 test-evidence/linux-consumer.json|
 |许可证/来源/AI|MIT、THIRD_PARTY.md、AI_USAGE.md；original synthetic fixture，主机 raw 不分发|来源/AI说明完成；participant-guide.md 已提供手算与演示导读，本人复核仍待完成|
-|申报与展示|submission-proposal.md、本地一页 PDF、docs/demo.md|本地草稿|
-|公开仓库、持续公开记录|已获授权发布至 trail-it/moonpressure；保留原始本地阶段历史，首次公开时间以实际推送为准|发布执行中，不倒填公开时间|
-|正式包/registry 安装|已迁移为 trail-it/moonpressure；确切版本待同名账号发布与registry消费|待发布|
-|远端 CI|.github/workflows/ci.yml 已准备；滚动官方工具链、实际版本写日志，尚无在线结果|待发布|
+|申报与展示|submission-proposal.md、公开一页 PDF、docs/demo.md|草稿已公开；未提交报名|
+|公开仓库、持续公开记录|[trail-it/moonpressure](https://github.com/trail-it/moonpressure) 已公开；2026-10-18 15:05:09 北京时间创建，保留原始本地阶段历史|已上传；此前公开持续开发要求不能由此次上传补造|
+|正式包/registry 安装|trail-it/moonpressure@0.1.0 已发布，registry 构建成功；Windows 三后端/Linux 四后端各 1 项消费者测试，Linux 下载包编译 C 桥并实调 cgroup|通过；见 test-evidence/*registry-0.1.0.json 与 publication-0.1.0.json|
+|远端 CI|[代码冻结提交 011ea05 的 CI](https://github.com/trail-it/moonpressure/actions/runs/39106369889) 成功；覆盖核心后端、Linux oracle、实际归档消费|该提交通过；最终材料提交另行核实|
 |报名/入群/官方审核|未执行，未填写真实个人资料|未开始|
 
 ## 10/18 完善与剩余项
 
 两个既有源码访问缺口已用 registry 的确切发布归档补齐；未取得 GitHub 最近提交/Issues 不能冒称已核实。一般 cgroup 内存查询已有实现，本项目新增贡献限定为多层预算、区间压力和准入状态。新增两项端到端状态回归及带答案的理解导读。
 
-本地可控缺项已补齐；参赛者独立讲解/复现仍须本人完成，公开持续开发、真实身份、发布和官方报名/审核仍须实际操作。一次性上传不会自动补成此前公开开发过程。CI/registry 消费是项目交付验证，不将其冒称官网逐项硬门槛。
+技术交付、GitHub 上传与 Mooncakes 确切版本消费已完成；参赛者独立讲解/复现与官方报名/审核仍须本人完成。一次性上传不会自动补成此前公开开发过程。CI/registry 消费是项目交付验证，不将其冒称官网逐项硬门槛。
 
 ## 新增贡献和限制
 
@@ -40,4 +40,4 @@
 
 输入是可见层级的时间切片：祖先共享用量随时变化，读取不是原子事务；不含 affinity/cpuset；命名空间外约束未知。设备/inode 可识别常见目录重建，但跨主机/重启/长期 inode 复用需要调用方 epoch。缺失 PSI 会阻止自动恢复，ready 仍可能附 missing_pressure。建议不执行资源预留或保证免 OOM。详见 README 与 docs/architecture.md。
 
-总体状态：本地技术和材料就绪，用户已授权 trail-it 发布；GitHub/CI/Mooncakes 的实际结果以 release.md 后续记录为准。官方初审、最终验收、获奖均无结果，不能由本复核替代。
+总体状态：技术和材料就绪，trail-it 的 GitHub/Mooncakes 已发布并验证；具体提交和证据见 release.md。官方初审、最终验收、获奖均无结果，不能由本复核替代。

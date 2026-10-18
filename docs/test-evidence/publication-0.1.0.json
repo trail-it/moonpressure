@@ -1,0 +1,21 @@
+{
+  "module": "trail-it/moonpressure",
+  "version": "0.1.0",
+  "published_at": "2026-10-18T07:19:49.968960+00:00",
+  "publisher": "trail-it",
+  "repository": "https://github.com/trail-it/moonpressure",
+  "license": "MIT",
+  "registry_build_status": "success",
+  "published_archive_files": 54,
+  "published_archive_sha256": "abc21e95a0deecd2cf13e7bd0905a3bd9e87f966b7cf9da1c1d0fff0497ae15f",
+  "matches_registry_checksum": true,
+  "code_freeze_commit": "011ea05e2e0b3831419f2d69730744395d2025fe",
+  "archive_documentation": "publication-time snapshot; final records in GitHub main",
+  "private_paths_found": false,
+  "native_bridge_and_public_interfaces_present": true,
+  "registry_consumer_uses_local_workspace_override": false,
+  "consumers": [
+    "windows-registry-0.1.0.json",
+    "linux-registry-0.1.0.json"
+  ]
+}

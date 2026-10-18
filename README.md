@@ -4,7 +4,7 @@ MoonPressure 为 MoonBit 应用提供 Linux cgroup v2 资源压力诊断和队�
 
 适用场景：在容器或 systemd 服务中运行编译队列、AI 工具任务和后台作业。宿主 CPU 利用率不能反映容器节流；叶节点 `memory.max=max` 仍可能受父级共享预算约束。
 
-**MoonPressure 0.1.0，MIT。** 正式目标为 [trail-it/moonpressure](https://github.com/trail-it/moonpressure)，Mooncakes 模块为 `trail-it/moonpressure`。当前发布核验状态见 [交付记录](docs/release.md)；规则、竞争分析及方案见根目录报告。
+**MoonPressure 0.1.0，MIT。** 公开源码：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)。Mooncakes 模块为 `trail-it/moonpressure`。发布及注册表消费结果见 GitHub 的[最新交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)；规则、竞争分析及方案见根目录报告。
 
 ```sh
 moon add trail-it/moonpressure@0.1.0
