@@ -77,6 +77,52 @@ test "missing PSI is explicit and prevents claiming recovery" {
 }
 
 ///|
+test "intermediate pressure breaks the recovery streak" {
+  let c = @moonpressure.Controller::new(@moonpressure.Policy::new())
+  let b = @moonpressure.budget([@moonpressure.Layer::parse("unlimited")])
+  // Hand-derived trace: high, high, low, between thresholds, low, low, low.
+  let points = [
+    sample(0L, 0L),
+    sample(1000000L, 300000L),
+    sample(2000000L, 600000L),
+    sample(3000000L, 600000L),
+    sample(4000000L, 700000L),
+    sample(5000000L, 700000L),
+    sample(6000000L, 700000L),
+    sample(7000000L, 700000L),
+  ]
+  let states = ["ready", "shed", "shed", "shed", "shed", "shed", "ready"]
+  let low_streaks = [0, 0, 1, 0, 1, 2, 3]
+  for i in 1..<points.length() {
+    let advice = c.update(@moonpressure.interval(points[i - 1], points[i]), b)
+    assert_eq(advice.state.label(), states[i - 1])
+    assert_eq(advice.low_streak, low_streaks[i - 1])
+  }
+}
+
+///|
+test "missing PSI keeps an OOM-triggered controller in Shed" {
+  let c = @moonpressure.Controller::new(@moonpressure.Policy::new())
+  let b = @moonpressure.budget([@moonpressure.Layer::parse("unlimited")])
+  let mut previous = sample(0L, 0L, missing=true)
+  for second in 1..<=5 {
+    // One cumulative OOM event, then four event-free intervals with missing PSI.
+    let current = sample(second.to_int64() * 1000000L, 0L, oom=1L, missing=true)
+    let advice = c.update(@moonpressure.interval(previous, current), b)
+    assert_eq(advice.state.label(), "shed")
+    assert_eq(advice.low_streak, 0)
+    assert_true(advice.reasons.contains(MissingPressure))
+    if second == 1 {
+      assert_true(advice.reasons.contains(OutOfMemory))
+    } else {
+      assert_true(advice.reasons.contains(Recovering))
+      assert_false(advice.reasons.contains(OutOfMemory))
+    }
+    previous = current
+  }
+}
+
+///|
 test "headroom and high soft limit produce reasons and policy validates" {
   let c = @moonpressure.Controller::new(
     @moonpressure.Policy::new(enter_intervals=1),

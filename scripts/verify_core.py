@@ -1,5 +1,5 @@
 """Run the promised core matrix once and save a sanitized summary."""
-import json, pathlib, platform, re, subprocess, sys
+import datetime, json, pathlib, platform, re, subprocess, sys
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 
 def run(*args):
@@ -22,7 +22,8 @@ for target in targets:
     counts[target]=int(m[1])
     run('moon','build','--target',target,'--release','--deny-warn')
 run(sys.executable,'scripts/verify_replay.py',*targets)
-summary={'date':'2026-10-15','platform':platform.system(),'toolchain':[line.split(')')[0]+')' for line in version.splitlines() if line.startswith(('moon ','moonc ','moonrun '))], 'library_and_documentation_tests':counts,'format_check':'passed','check_build_deny_warn':'passed','replay_intervals_per_backend':5,'replay_hand_oracle_and_cross_backend':'passed'}
+evidence_date=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).date().isoformat()
+summary={'date':evidence_date,'platform':platform.system(),'toolchain':[line.split(')')[0]+')' for line in version.splitlines() if line.startswith(('moon ','moonc ','moonrun '))], 'library_and_documentation_tests':counts,'format_check':'passed','check_build_deny_warn':'passed','replay_intervals_per_backend':5,'replay_hand_oracle_and_cross_backend':'passed'}
 folder=ROOT/'demo-output';folder.mkdir(exist_ok=True)
 (folder/'core-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
 print(json.dumps(summary,indent=2))

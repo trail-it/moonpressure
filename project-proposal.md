@@ -29,3 +29,7 @@ MVP：PSI some/full；cpu.max、cpu.stat、memory.current/max/high/events；逐�
 2026-10-15 读取官方 [十月赛网站源码](https://github.com/moonbitlang/Hackathon2026/blob/main/src/App.tsx)，网页依赖 JS，正文通过 raw GitHub 读取，原件 research/rules.txt。报名/验收截止 2026-10-31、十月最多提交 3 次、每队至多 3 人、MoonBit 主体、公开持续开发、可复现测试/演示、开源合规。报名次数的主体及修改计算未自行推断。
 
 本次仅本地完成。GitHub owner/repo、Git 真实提交身份、Mooncakes 登录账号/namespace、参赛者信息均待指定。local/moonpressure 是本地临时模块名。中性本地 Git 身份仅保留真实阶段历史，不代表用户公开贡献身份；发布前必须确认归属。尚未公开、报名、入群或通过审核。
+
+## 2026-10-18 完善
+
+已从 registry 读取 sysinfo@0.1.6/subproc@0.3.0 发布源码，核实 cgroup 内存查询重叠与新增边界，详见 docs/ecosystem-supplement-2026-10-18.md。增加参赛者导读及“中间压力打断恢复/缺失 PSI 不恢复 OOM 降载”的两项端到端状态回归。本轮没有扩展产品功能或执行发布。

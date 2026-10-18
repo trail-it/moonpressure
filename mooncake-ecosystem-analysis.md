@@ -46,6 +46,10 @@ PSI 搜索含 substring 误报；pressure 命中气象等无关条目。cgroup�
 |[Ridge-Lab/moonwavkit@0.1.3](https://mooncakes.io/docs/Ridge-Lab/moonwavkit@0.1.3)|2026-08-20T05:10:54.940166|MoonBit-native WAV parser, PCM decoder, waveform analysis, validation, and audio utility toolkit.|https://github.com/Ridge-Lab/MoonWavKit.git|
 |[yadidyc/moonpod@0.2.0](https://mooncakes.io/docs/yadidyc/moonpod@0.2.0)|2026-09-30T17:25:25.683902|A transport-neutral resource policy and audit engine for MoonBit hosts|https://github.com/yadidyc/moonpod|
 
-created_at 按 registry 原字段记录，不当成最近源码提交。Star/下载未取得统一可靠数据，不填造；GitHub 活跃度见另一份报告。MoonLoudness 的公开 API、README 已读，提供流式 K 加权、门控、LRA 和真峰值，淘汰响度候选。Wasm inspect 和 host ABI 项目覆盖候选的主要功能，淘汰 Wasm 候选。sysinfo/subproc 的声明覆盖系统与进程指标，但对应源码 URL 本次 404，未能验证其 cgroup 细节，保留此竞争风险。
+created_at 按 registry 原字段记录，不当成最近源码提交。Star/下载未取得统一可靠数据，不填造；GitHub 活跃度见另一份报告。MoonLoudness 的公开 API、README 已读，提供流式 K 加权、门控、LRA 和真峰值，淘汰响度候选。Wasm inspect 和 host ABI 项目覆盖候选的主要功能，淘汰 Wasm 候选。10/15 对 sysinfo/subproc 的 GitHub URL 获取失败；10/18 已从 registry 发布归档补核：sysinfo 有单挂载根内存/swap 额度，subproc 为进程管理/采样。具体差异和原件来源见 [源码补核报告](docs/ecosystem-supplement-2026-10-18.md)。
 
 MoonPressure 的新增是 cgroup v2 层级约束与可用内存余量、PSI 时间差分、CPU 节流诊断、带滞回的队列准入建议；不实现通用进程库、沙箱执行器或监控 UI。无第三方运行时包依赖。
+
+## 2026-10-18 补核
+
+重新取得 3088 条、按完整模块名去重后 3088 条元数据。对本方向做定向检索，并实际阅读 sysinfo@0.1.6、subproc@0.3.0 的公开发布源码；未把索引数量当源码审阅数量。一般 cgroup 内存查询已有实现，本项目独立新增为祖先共享约束、区间压力差分和有状态准入；完整矩阵见补核报告。

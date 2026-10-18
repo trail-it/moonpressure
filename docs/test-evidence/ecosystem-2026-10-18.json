@@ -1,0 +1,27 @@
+{
+  "retrieved_date": "2026-10-18",
+  "module_metadata_entries": 3088,
+  "unique_module_names": 3088,
+  "scope": "Fresh registry metadata plus targeted reading of exact published source archives; third-party tests were read, not executed",
+  "reviewed_packages": [
+    {
+      "module": "Milky2018/sysinfo",
+      "version": "0.1.6",
+      "archive_entries": 25,
+      "source": "https://download.mooncakes.io/user/Milky2018/sysinfo/0.1.6.zip",
+      "known_overlap": "CGroupLimits and single mount-root memory/swap headroom",
+      "distinct_contribution": "Visible ancestor reduction, PSI/throttle deltas and hysteretic admission advice"
+    },
+    {
+      "module": "chensuiyi/subproc",
+      "version": "0.3.0",
+      "archive_entries": 13,
+      "source": "https://download.mooncakes.io/user/chensuiyi/subproc/0.3.0.zip",
+      "known_overlap": "Per-process RSS/CPU sampling, not cgroup pressure decisions",
+      "distinct_contribution": "Workload pressure and admission advice rather than process lifecycle operations"
+    }
+  ],
+  "upstream_sources_redistributed": false,
+  "github_commit_activity_verified": false,
+  "official_topic_approval": "not obtained"
+}
