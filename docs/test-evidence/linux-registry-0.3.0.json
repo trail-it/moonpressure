@@ -1,0 +1,16 @@
+{
+  "version": "0.3.0",
+  "module": "trail-it/moonpressure",
+  "source": "public registry exact version",
+  "consumer_tests": {
+    "wasm": 3,
+    "wasm-gc": 3,
+    "js": 3,
+    "native": 3
+  },
+  "registry_installation": "0.3.0",
+  "resolved_module_version": "0.3.0",
+  "local_workspace_override": false,
+  "resolution_evidence": "moon tree --json registry source",
+  "native_bridge_compiled_and_real_cgroup_called": true
+}

@@ -4,7 +4,13 @@
 
 新增dispatch协调器、JSON-lines宿主协议、真实子进程演示、独立动态模型和基线价值/规划成本对照。运行时代码冻结于 `7d73c154fef0fbeff64cadb02bc20a7e139c09a0`；后续仅验证、CI和材料变更。指定Linux服务器完整四后端各35项库/文档测试、66个选择案例、真实三次采样独立oracle通过；Windows三后端同样通过。实际5个子进程全部回收，2,000次事件逐步模型核对及20组对照通过。密集64层/16任务规划约40毫秒，详见[实测说明](execution-validation.md)。
 
-实际归档消费者增加dispatch取消/重试/旧回调验证，Windows每后端3项消费者测试通过（本地workspace输出38=35库/文档+3消费者）。Mooncakes 0.3.0发布、确切registry消费与最终CI结果将按实际完成记录，尚未代提交复审表单。
+实际归档消费者增加dispatch取消/重试/旧回调验证，Windows三后端/Linux四后端各3项消费者测试通过（本地workspace输出38=35库/文档+3消费者）；服务器归档103文件是运行时冻结副本的中间材料，不是实际上传包计数。
+
+[Mooncakes 0.3.0](https://mooncakes.io/docs/trail-it/moonpressure@0.3.0)已由trail-it于2026-10-21 14:32:22 UTC（北京时间22:32:22）发布，registry构建success。上传来源提交 `b86f5b0841c4677f78728135e5d675bc1d91485e`；实际112文件，SHA-256与官方checksum一致，必要C桥、dispatch/admission源码及公开接口保留。见[发布证据](test-evidence/publication-0.3.0.json)。
+
+Windows三后端、指定Linux服务器四后端从公开registry独立安装确切0.3.0，各3项消费者测试通过；依赖图确认registry来源、无workspace覆盖。Linux从下载包编译C桥并实际读取cgroup。见[Windows](test-evidence/windows-registry-0.3.0.json)与[Linux](test-evidence/linux-registry-0.3.0.json)。包内文档是发布时快照，最终交付记录以GitHub main为准；后续材料提交不改变已发布运行时代码。未代提交复审表单，无官方复审结果。
+
+[发布来源CI](https://github.com/trail-it/moonpressure/actions/runs/39617469046)已完成全部验证步骤，覆盖四后端、实际归档、模型、真实子进程和对照；该运行发生在发包前，确切registry消费由上述Windows/指定Linux实测另行确认。最终材料提交的CI以[main检查](https://github.com/trail-it/moonpressure/actions/workflows/ci.yml?query=branch%3Amain)为准，版本入口[v0.3.0](https://github.com/trail-it/moonpressure/releases/tag/v0.3.0)。
 
 
 ## 0.2.0 初审后修订（2026-10-21）
