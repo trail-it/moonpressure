@@ -18,4 +18,4 @@
 
 **7、移植与参考**：非移植项目，无移植上游许可证适用项。资源语义依据[Linux cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html)，无第三方实现源码移植。已补核moonpool、moontask的公开能力边界，新增范围与其资源池/队列执行职责区分，见复审补充说明。
 
-**8、仓库与复现证据**：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)，保留真实开发与本轮实质修改[历史](https://github.com/trail-it/moonpressure/commits/main/)。[复审补充说明](https://github.com/trail-it/moonpressure/blob/main/docs/review-response.md)提供实现位置、成对案例、复现命令；版本及验证状态见[交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)。本轮为初审驳回后的修改，尚无复审通过结论。
+**8、仓库与复现证据**：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)，保留真实开发与本轮实质修改[历史](https://github.com/trail-it/moonpressure/commits/main/)。[复审补充说明](https://github.com/trail-it/moonpressure/blob/main/docs/review-response.md)提供实现位置、成对案例、复现命令；0.2.0已发布，版本及验证状态见[交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)。本轮为初审驳回后的修改，尚无复审通过结论。

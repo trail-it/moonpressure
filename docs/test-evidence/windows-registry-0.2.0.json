@@ -9,5 +9,6 @@
   },
   "registry_installation": "0.2.0",
   "resolved_module_version": "0.2.0",
-  "local_workspace_override": false
+  "local_workspace_override": false,
+  "resolution_evidence": "moon tree --json registry source"
 }
