@@ -18,6 +18,7 @@ def main():
     parser.add_argument('--registry-version',help='Install this exact released version without a local workspace override')
     args=parser.parse_args()
     version=args.registry_version or re.search(r'^version\s*=\s*"([^"]+)"',(ROOT/'moon.mod').read_text(),re.M)[1]
+    has_admission=tuple(map(int,version.split('.'))) >= (0,2,0)
     base=ROOT/'_build/package-consumers';base.mkdir(parents=True,exist_ok=True)
     work=pathlib.Path(tempfile.mkdtemp(prefix='consumer-',dir=base))
     names=[]
@@ -31,6 +32,8 @@ def main():
             assert not any(p in blocked for n in names for p in pathlib.PurePosixPath(n).parts)
             for file in ['moon.mod','moon.pkg','native/bridge.c','native/moon.pkg','native/pkg.generated.mbti','pkg.generated.mbti','LICENSE','README.md']:
                 assert file in names,('missing archive file',file)
+            if has_admission:
+                assert {'admission/moon.pkg','admission/pkg.generated.mbti','admission/search.mbt','admission/ledger.mbt'}.issubset(names)
             z.extractall(work/'library')
         write(work/'moon.work','members = ["library", "consumer"]\n')
     consumer=work/'consumer'
@@ -38,7 +41,8 @@ def main():
     if args.registry_version:
         assert not (work/'moon.work').exists()
         run('moon','-C',consumer,'add',f'{MODULE}@{version}')
-    write(consumer/'moon.pkg',f'import {{ "{MODULE}" @pressure }} for "test"\n')
+    extra=f', "{MODULE}/admission" @admission' if has_admission else ''
+    write(consumer/'moon.pkg',f'import {{ "{MODULE}" @pressure{extra} }} for "test"\n')
     write(consumer/'api_test.mbt',r'''///|
 test "packaged public APIs enforce parent budget and OOM admission" {
   let limits = @pressure.budget([
@@ -62,10 +66,31 @@ test "packaged public APIs enforce parent budget and OOM admission" {
   assert_true(before.to_json().stringify().contains("9007199254740993"))
 }
 ''')
+    if has_admission:
+        write(consumer/'admission_test.mbt',r'''///|
+test "downloaded planner selects complementary jobs and rejects stale commits" {
+  let cap = @admission.Resources::new(memory_bytes=10L, cpu_millis=10L)
+  let ledger = @admission.Ledger::new([@admission.Scope::new("root", cap)])
+  let jobs = [
+    @admission.Job::new("a", value=9L, [@admission.Allocation::new("root", cap)]),
+    @admission.Job::new("b", value=6L, [@admission.Allocation::new("root", @admission.Resources::new(memory_bytes=6L, cpu_millis=4L))]),
+    @admission.Job::new("c", value=6L, [@admission.Allocation::new("root", @admission.Resources::new(memory_bytes=4L, cpu_millis=6L))]),
+  ]
+  let plan = ledger.plan(jobs)
+  let stale = ledger.plan(jobs)
+  assert_eq(plan.selected(), ["b", "c"])
+  assert_eq(plan.value(), 12L)
+  assert_eq(plan.commit(), ["b", "c"])
+  assert_true(try { ignore(stale.commit()); false } catch { StalePlan => true; _ => false })
+  ledger.release("b")
+  ledger.release("c")
+  assert_eq(ledger.balances()[0].free.memory_bytes, 10L)
+}
+''')
     targets=['wasm','wasm-gc','js']
     if sys.platform.startswith('linux'):targets.append('native')
     for target in targets:run('moon','-C',consumer,'test','--target',target,'--deny-warn')
-    result={'version':version,'module':MODULE,'source':'public registry exact version' if args.registry_version else 'actual local zip extracted into isolated workspace','consumer_tests':{t:1 for t in targets},'registry_installation':version if args.registry_version else 'not performed'}
+    result={'version':version,'module':MODULE,'source':'public registry exact version' if args.registry_version else 'actual local zip extracted into isolated workspace','consumer_tests':{t:2 if has_admission else 1 for t in targets},'registry_installation':version if args.registry_version else 'not performed'}
     if not args.registry_version:result['archive_files']=len(names)
     if sys.platform.startswith('linux'):
         write(consumer/'probe/moon.pkg',f'import {{ "{MODULE}/native", "moonbitlang/core/env" }}\nsupported_targets = "native"\noptions("is-main": true)\n')

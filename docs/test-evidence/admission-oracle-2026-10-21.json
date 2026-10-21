@@ -1,0 +1,12 @@
+{
+  "targets": [
+    "wasm",
+    "wasm-gc",
+    "js"
+  ],
+  "selection_cases_per_backend": 66,
+  "oracle": "independent Python exhaustive subset enumeration and blocker reconstruction",
+  "cross_backend_equal": true,
+  "synthetic": true,
+  "lifecycle": "commit/stale/shrink/release passed"
+}

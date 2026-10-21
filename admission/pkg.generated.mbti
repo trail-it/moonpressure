@@ -1,0 +1,131 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "trail-it/moonpressure/admission"
+
+import {
+  "moonbitlang/core/debug",
+  "trail-it/moonpressure",
+}
+
+// Values
+
+// Errors
+pub(all) suberror AdmissionError {
+  Invalid(String)
+  StalePlan
+  UnknownLease(String)
+} derive(Eq, @debug.Debug)
+pub fn AdmissionError::equal(Self, Self) -> Bool
+pub fn AdmissionError::not_equal(Self, Self) -> Bool
+pub fn AdmissionError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub struct Allocation {
+  scope : String
+  resources : Resources
+} derive(Eq, @debug.Debug)
+pub fn Allocation::equal(Self, Self) -> Bool
+pub fn Allocation::new(String, Resources) -> Self raise AdmissionError
+pub fn Allocation::not_equal(Self, Self) -> Bool
+pub fn Allocation::to_repr(Self) -> @debug.Repr
+
+pub struct Balance {
+  scope : String
+  capacity : Resources
+  reserved : Resources
+  free : Resources
+  deficit : Resources
+  gate : Gate
+} derive(Eq, @debug.Debug)
+pub fn Balance::equal(Self, Self) -> Bool
+pub fn Balance::not_equal(Self, Self) -> Bool
+pub fn Balance::to_json(Self) -> Json
+pub fn Balance::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Blocker {
+  Memory(String, Int64, Int64)
+  Cpu(String, Int64, Int64)
+  Pressure(String)
+  UnknownPressure(String)
+} derive(Eq, @debug.Debug)
+pub fn Blocker::equal(Self, Self) -> Bool
+pub fn Blocker::not_equal(Self, Self) -> Bool
+pub fn Blocker::to_json(Self) -> Json
+pub fn Blocker::to_repr(Self) -> @debug.Repr
+
+pub struct Deferred {
+  job_id : String
+  blockers : Array[Blocker]
+} derive(Eq, @debug.Debug)
+pub fn Deferred::equal(Self, Self) -> Bool
+pub fn Deferred::not_equal(Self, Self) -> Bool
+pub fn Deferred::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Gate {
+  Open
+  Pressure
+  Unknown
+} derive(Eq, @debug.Debug)
+pub fn Gate::equal(Self, Self) -> Bool
+pub fn Gate::from_advice(@moonpressure.Advice) -> Self
+pub fn Gate::label(Self) -> String
+pub fn Gate::not_equal(Self, Self) -> Bool
+pub fn Gate::to_repr(Self) -> @debug.Repr
+
+pub struct Job {
+  id : String
+  value : Int64
+  allocations : Array[Allocation]
+} derive(Eq, @debug.Debug)
+pub fn Job::equal(Self, Self) -> Bool
+pub fn Job::new(String, value~ : Int64, ArrayView[Allocation]) -> Self raise AdmissionError
+pub fn Job::not_equal(Self, Self) -> Bool
+pub fn Job::to_json(Self) -> Json
+pub fn Job::to_repr(Self) -> @debug.Repr
+
+pub struct Ledger {
+  // private fields
+}
+pub fn Ledger::balances(Self) -> Array[Balance]
+pub fn Ledger::new(ArrayView[Scope]) -> Self raise AdmissionError
+pub fn Ledger::plan(Self, ArrayView[Job]) -> Plan raise AdmissionError
+pub fn Ledger::refresh(Self, ArrayView[Scope]) -> Unit raise AdmissionError
+pub fn Ledger::release(Self, String) -> Unit raise AdmissionError
+pub fn Ledger::revision(Self) -> Int64
+
+pub struct Plan {
+  // private fields
+}
+pub fn Plan::commit(Self) -> Array[String] raise AdmissionError
+pub fn Plan::deferred(Self) -> Array[Deferred]
+pub fn Plan::explored_states(Self) -> Int
+pub fn Plan::revision(Self) -> Int64
+pub fn Plan::selected(Self) -> Array[String]
+pub fn Plan::to_json(Self) -> Json
+pub fn Plan::value(Self) -> Int64
+
+pub struct Resources {
+  memory_bytes : Int64
+  cpu_millis : Int64
+} derive(Eq, @debug.Debug)
+pub fn Resources::equal(Self, Self) -> Bool
+pub fn Resources::new(memory_bytes~ : Int64, cpu_millis~ : Int64) -> Self raise AdmissionError
+pub fn Resources::not_equal(Self, Self) -> Bool
+pub fn Resources::to_json(Self) -> Json
+pub fn Resources::to_repr(Self) -> @debug.Repr
+
+pub struct Scope {
+  id : String
+  parent : String?
+  capacity : Resources
+  gate : Gate
+} derive(Eq, @debug.Debug)
+pub fn Scope::equal(Self, Self) -> Bool
+pub fn Scope::from_layer(@moonpressure.Layer, Resources, parent? : String, gate? : Gate) -> Self raise AdmissionError
+pub fn Scope::new(String, Resources, parent? : String, gate? : Gate) -> Self raise AdmissionError
+pub fn Scope::not_equal(Self, Self) -> Bool
+pub fn Scope::to_json(Self) -> Json
+pub fn Scope::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

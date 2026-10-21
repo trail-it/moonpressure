@@ -1,0 +1,10 @@
+import {
+  "trail-it/moonpressure/admission" @scheduler,
+  "trail-it/moonpressure/native",
+  "trail-it/moonpressure" @pressure,
+  "moonbitlang/core/env",
+}
+
+supported_targets = "native"
+
+pkgtype(kind: "executable")

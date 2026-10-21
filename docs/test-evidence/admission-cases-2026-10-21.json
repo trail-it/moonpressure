@@ -1,0 +1,588 @@
+[
+  {
+    "kind": "selection",
+    "case": "shared-parent",
+    "synthetic": true,
+    "scopes": [
+      {
+        "id": "root",
+        "parent": null,
+        "capacity": {
+          "memory_bytes": "100",
+          "cpu_millis": "100"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "left",
+        "parent": "root",
+        "capacity": {
+          "memory_bytes": "100",
+          "cpu_millis": "100"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "right",
+        "parent": "root",
+        "capacity": {
+          "memory_bytes": "100",
+          "cpu_millis": "100"
+        },
+        "gate": "open"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "a",
+        "value": "1",
+        "allocations": [
+          {
+            "scope": "left",
+            "resources": {
+              "memory_bytes": "60",
+              "cpu_millis": "1"
+            }
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "value": "1",
+        "allocations": [
+          {
+            "scope": "right",
+            "resources": {
+              "memory_bytes": "60",
+              "cpu_millis": "1"
+            }
+          }
+        ]
+      }
+    ],
+    "plan": {
+      "schema_version": 1,
+      "revision": "0",
+      "selected": [
+        "a"
+      ],
+      "total_value": "1",
+      "explored_states": 6,
+      "deferred": [
+        {
+          "job_id": "b",
+          "blockers": [
+            {
+              "kind": "memory",
+              "scope": "root",
+              "requested": "60",
+              "available": "40"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "selection",
+    "case": "separate-parents",
+    "synthetic": true,
+    "scopes": [
+      {
+        "id": "one",
+        "parent": null,
+        "capacity": {
+          "memory_bytes": "100",
+          "cpu_millis": "100"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "two",
+        "parent": null,
+        "capacity": {
+          "memory_bytes": "100",
+          "cpu_millis": "100"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "left",
+        "parent": "one",
+        "capacity": {
+          "memory_bytes": "100",
+          "cpu_millis": "100"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "right",
+        "parent": "two",
+        "capacity": {
+          "memory_bytes": "100",
+          "cpu_millis": "100"
+        },
+        "gate": "open"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "a",
+        "value": "1",
+        "allocations": [
+          {
+            "scope": "left",
+            "resources": {
+              "memory_bytes": "60",
+              "cpu_millis": "1"
+            }
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "value": "1",
+        "allocations": [
+          {
+            "scope": "right",
+            "resources": {
+              "memory_bytes": "60",
+              "cpu_millis": "1"
+            }
+          }
+        ]
+      }
+    ],
+    "plan": {
+      "schema_version": 1,
+      "revision": "0",
+      "selected": [
+        "a",
+        "b"
+      ],
+      "total_value": "2",
+      "explored_states": 5,
+      "deferred": []
+    }
+  },
+  {
+    "kind": "selection",
+    "case": "complementary",
+    "synthetic": true,
+    "scopes": [
+      {
+        "id": "root",
+        "parent": null,
+        "capacity": {
+          "memory_bytes": "10",
+          "cpu_millis": "10"
+        },
+        "gate": "open"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "a",
+        "value": "9",
+        "allocations": [
+          {
+            "scope": "root",
+            "resources": {
+              "memory_bytes": "10",
+              "cpu_millis": "10"
+            }
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "value": "6",
+        "allocations": [
+          {
+            "scope": "root",
+            "resources": {
+              "memory_bytes": "6",
+              "cpu_millis": "4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c",
+        "value": "6",
+        "allocations": [
+          {
+            "scope": "root",
+            "resources": {
+              "memory_bytes": "4",
+              "cpu_millis": "6"
+            }
+          }
+        ]
+      }
+    ],
+    "plan": {
+      "schema_version": 1,
+      "revision": "0",
+      "selected": [
+        "b",
+        "c"
+      ],
+      "total_value": "12",
+      "explored_states": 9,
+      "deferred": [
+        {
+          "job_id": "a",
+          "blockers": [
+            {
+              "kind": "memory",
+              "scope": "root",
+              "requested": "10",
+              "available": "0"
+            },
+            {
+              "kind": "cpu",
+              "scope": "root",
+              "requested": "10",
+              "available": "0"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "selection",
+    "case": "changed-demand",
+    "synthetic": true,
+    "scopes": [
+      {
+        "id": "root",
+        "parent": null,
+        "capacity": {
+          "memory_bytes": "10",
+          "cpu_millis": "10"
+        },
+        "gate": "open"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "a",
+        "value": "9",
+        "allocations": [
+          {
+            "scope": "root",
+            "resources": {
+              "memory_bytes": "10",
+              "cpu_millis": "10"
+            }
+          }
+        ]
+      },
+      {
+        "id": "b",
+        "value": "6",
+        "allocations": [
+          {
+            "scope": "root",
+            "resources": {
+              "memory_bytes": "6",
+              "cpu_millis": "4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c",
+        "value": "6",
+        "allocations": [
+          {
+            "scope": "root",
+            "resources": {
+              "memory_bytes": "7",
+              "cpu_millis": "6"
+            }
+          }
+        ]
+      }
+    ],
+    "plan": {
+      "schema_version": 1,
+      "revision": "0",
+      "selected": [
+        "a"
+      ],
+      "total_value": "9",
+      "explored_states": 8,
+      "deferred": [
+        {
+          "job_id": "b",
+          "blockers": [
+            {
+              "kind": "memory",
+              "scope": "root",
+              "requested": "6",
+              "available": "0"
+            },
+            {
+              "kind": "cpu",
+              "scope": "root",
+              "requested": "4",
+              "available": "0"
+            }
+          ]
+        },
+        {
+          "job_id": "c",
+          "blockers": [
+            {
+              "kind": "memory",
+              "scope": "root",
+              "requested": "7",
+              "available": "0"
+            },
+            {
+              "kind": "cpu",
+              "scope": "root",
+              "requested": "6",
+              "available": "0"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "selection",
+    "case": "gang-one-branch-held",
+    "synthetic": true,
+    "scopes": [
+      {
+        "id": "root",
+        "parent": null,
+        "capacity": {
+          "memory_bytes": "12",
+          "cpu_millis": "12"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "left",
+        "parent": "root",
+        "capacity": {
+          "memory_bytes": "10",
+          "cpu_millis": "10"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "right",
+        "parent": "root",
+        "capacity": {
+          "memory_bytes": "10",
+          "cpu_millis": "10"
+        },
+        "gate": "pressure"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "gang",
+        "value": "20",
+        "allocations": [
+          {
+            "scope": "left",
+            "resources": {
+              "memory_bytes": "4",
+              "cpu_millis": "4"
+            }
+          },
+          {
+            "scope": "right",
+            "resources": {
+              "memory_bytes": "4",
+              "cpu_millis": "4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "local",
+        "value": "1",
+        "allocations": [
+          {
+            "scope": "left",
+            "resources": {
+              "memory_bytes": "6",
+              "cpu_millis": "6"
+            }
+          }
+        ]
+      }
+    ],
+    "plan": {
+      "schema_version": 1,
+      "revision": "0",
+      "selected": [
+        "local"
+      ],
+      "total_value": "1",
+      "explored_states": 4,
+      "deferred": [
+        {
+          "job_id": "gang",
+          "blockers": [
+            {
+              "kind": "pressure",
+              "scope": "right"
+            },
+            {
+              "kind": "memory",
+              "scope": "root",
+              "requested": "8",
+              "available": "6"
+            },
+            {
+              "kind": "cpu",
+              "scope": "root",
+              "requested": "8",
+              "available": "6"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "selection",
+    "case": "gang-open",
+    "synthetic": true,
+    "scopes": [
+      {
+        "id": "root",
+        "parent": null,
+        "capacity": {
+          "memory_bytes": "12",
+          "cpu_millis": "12"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "left",
+        "parent": "root",
+        "capacity": {
+          "memory_bytes": "10",
+          "cpu_millis": "10"
+        },
+        "gate": "open"
+      },
+      {
+        "id": "right",
+        "parent": "root",
+        "capacity": {
+          "memory_bytes": "10",
+          "cpu_millis": "10"
+        },
+        "gate": "open"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "gang",
+        "value": "20",
+        "allocations": [
+          {
+            "scope": "left",
+            "resources": {
+              "memory_bytes": "4",
+              "cpu_millis": "4"
+            }
+          },
+          {
+            "scope": "right",
+            "resources": {
+              "memory_bytes": "4",
+              "cpu_millis": "4"
+            }
+          }
+        ]
+      },
+      {
+        "id": "local",
+        "value": "1",
+        "allocations": [
+          {
+            "scope": "left",
+            "resources": {
+              "memory_bytes": "6",
+              "cpu_millis": "6"
+            }
+          }
+        ]
+      }
+    ],
+    "plan": {
+      "schema_version": 1,
+      "revision": "0",
+      "selected": [
+        "gang"
+      ],
+      "total_value": "20",
+      "explored_states": 4,
+      "deferred": [
+        {
+          "job_id": "local",
+          "blockers": [
+            {
+              "kind": "memory",
+              "scope": "root",
+              "requested": "6",
+              "available": "4"
+            },
+            {
+              "kind": "cpu",
+              "scope": "root",
+              "requested": "6",
+              "available": "4"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "kind": "lifecycle",
+    "case": "commit-stale-shrink-release",
+    "synthetic": true,
+    "first_selected": [
+      "a"
+    ],
+    "stale_rejected": true,
+    "after_shrink": [
+      {
+        "scope": "root",
+        "capacity": {
+          "memory_bytes": "50",
+          "cpu_millis": "50"
+        },
+        "reserved": {
+          "memory_bytes": "60",
+          "cpu_millis": "60"
+        },
+        "free": {
+          "memory_bytes": "0",
+          "cpu_millis": "0"
+        },
+        "deficit": {
+          "memory_bytes": "10",
+          "cpu_millis": "10"
+        },
+        "gate": "open"
+      }
+    ],
+    "after_release_selected": [
+      "b"
+    ]
+  }
+]

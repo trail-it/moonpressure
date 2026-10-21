@@ -1,5 +1,9 @@
 # 三分钟演示
 
+## 0.2.0 复审演示
+
+运行 `moon run examples/admission --target wasm-gc`，依次解释共享/独立父组、互补请求与改变请求后的选择、整组门禁、旧方案拒绝和缩额/释放。完整输入和输出都在JSON中，均标记synthetic。再运行 `python scripts/verify_admission.py wasm wasm-gc js` 做独立穷举对照。具体数值与核心职责见[复审说明](review-response.md)。原生只读衔接用 `moon run examples/admission-live --target native -- /sys/fs/cgroup RELATIVE`，不启动进程。
+
 0:00–0:30 展示“宿主空闲但容器被节流；叶节点 max 仍受父组共享额度限制”的需求，说明只读、不自动调整内核。
 
 0:30–1:00 运行 `moon run examples/replay --target wasm-gc`，输出标记 synthetic。父组配额 0.5 核、共享内存余量 100 MiB。

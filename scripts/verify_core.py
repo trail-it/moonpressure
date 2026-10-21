@@ -22,6 +22,7 @@ for target in targets:
     counts[target]=int(m[1])
     run('moon','build','--target',target,'--release','--deny-warn')
 run(sys.executable,'scripts/verify_replay.py',*targets)
+run(sys.executable,'scripts/verify_admission.py',*targets)
 evidence_date=datetime.datetime.now(datetime.timezone(datetime.timedelta(hours=8))).date().isoformat()
 summary={'date':evidence_date,'platform':platform.system(),'toolchain':[line.split(')')[0]+')' for line in version.splitlines() if line.startswith(('moon ','moonc ','moonrun '))], 'library_and_documentation_tests':counts,'format_check':'passed','check_build_deny_warn':'passed','replay_intervals_per_backend':5,'replay_hand_oracle_and_cross_backend':'passed'}
 folder=ROOT/'demo-output';folder.mkdir(exist_ok=True)

@@ -21,12 +21,19 @@ jobs:
           moon test --target wasm-gc --deny-warn
           moon test --target js --deny-warn
           python3 scripts/verify_replay.py wasm wasm-gc js
+          python3 scripts/verify_admission.py wasm wasm-gc js
       - name: Validate Linux collector and oracle
         run: |
           moon check --target native --deny-warn
           moon test --target native --deny-warn
           moon build --target native --release --deny-warn
           python3 scripts/verify_replay.py native
+          python3 scripts/verify_admission.py native
           python3 scripts/verify_linux.py
+      - name: Validate live observation to admission ledger
+        run: |
+          group=$(awk -F: '$1=="0" {print substr($3,2)}' /proc/self/cgroup)
+          moon run examples/admission-live --target native -- /sys/fs/cgroup "$group" > demo-output/admission-live.json
+          python3 -c 'import json; d=json.load(open("demo-output/admission-live.json")); assert d["real_linux_collection"] and d["stale_plan_rejected"] and d["released_all"] and d["processes_started"] == 0; print("Live collection to logical admission ledger passed")'
       - name: Validate actual package consumer
         run: python3 scripts/verify_package.py

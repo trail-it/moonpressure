@@ -1,14 +1,35 @@
 # MoonPressure
 
-MoonPressure 为 MoonBit 应用提供 Linux cgroup v2 资源压力诊断和队列准入建议。核心用纯 MoonBit 计算父组共享内存余量、CPU 配额上界、PSI 等待时间与节流增量，再通过滞回状态机给出 `ready` / `shed` 及原因。
+MoonPressure 为 MoonBit 应用提供 Linux cgroup v2 资源压力诊断与批次准入规划。0.2.0 在原有观测和滞回基础上增加共享祖先、多资源、整组作业的联合选择，以及带版本检查的资源预留账本：回答“本轮该启动哪些作业”，并防止多次调度重复分配容量。
 
 适用场景：在容器或 systemd 服务中运行编译队列、AI 工具任务和后台作业。宿主 CPU 利用率不能反映容器节流；叶节点 `memory.max=max` 仍可能受父级共享预算约束。
 
-**MoonPressure 0.1.0，MIT。** 公开源码：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)。Mooncakes 模块为 `trail-it/moonpressure`。发布及注册表消费结果见 GitHub 的[最新交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)；规则、竞争分析及方案见根目录报告。
+**MoonPressure 0.2.0 修订版，MIT。** 公开源码：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)。初审意见对应的新增核心与可运行反例见 [复审补充说明](docs/review-response.md)，API 用法见 [admission](admission/README.md)。0.2.0 发布状态见 [交付记录](docs/release.md)；下列已发布的 0.1.0 仅含原有诊断 API，不含新增规划器。
 
 ```sh
 moon add trail-it/moonpressure@0.1.0
 ```
+
+## 修订版：关系不同，准入结果不同
+
+在此修订版源码根目录运行：
+
+```sh
+moon run examples/admission --target wasm-gc
+python scripts/verify_admission.py wasm wasm-gc js
+```
+
+演示明确标记 synthetic，包含共享/独立父组、互补资源组合、协同作业门禁及提交/过期/缩额/释放。Python 从 JSON 输入独立穷举全部子集并重建阻塞原因；每个后端验证 6 个解释案例与 60 个确定性生成案例。
+
+|只改变的关系|结果|
+|---|---|
+|两个 60 内存请求，共享 100 预算 vs 分别拥有 100 的父组|`[a]` vs `[a,b]`|
+|CPU/内存各 10：A=(10,10),价值9；B=(4,6),C=(6,4),价值各6|选择 B+C，价值12，优于先选 A 的9|
+|将 C 的内存需求从4增加到7，其他输入不变|选择 A，价值9|
+|协同作业跨两个分支，其中一支关闭 vs 全部开放|整组等待且独立作业运行 vs 整组准入|
+|两份方案基于同一账本版本|第一份提交后，第二份报 `StalePlan`；重新规划才可提交|
+
+规划窗口至多16作业、64节点，每作业至多16条资源申请；最大化调用方声明的价值，再比较作业数和 ID。预留是单协调器内的逻辑账本；不保证内核资源、不代替进程执行器。采样刷新保留未释放预留，可能保守重复扣减；详见 [设计与边界](docs/admission-design.md)。
 
 ## 三分钟体验
 

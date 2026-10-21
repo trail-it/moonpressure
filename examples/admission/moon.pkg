@@ -1,0 +1,6 @@
+import {
+  "trail-it/moonpressure/admission" @scheduler,
+  "moonbitlang/core/env",
+}
+
+pkgtype(kind: "executable")

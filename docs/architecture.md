@@ -1,5 +1,9 @@
 # Architecture and contracts
 
+## 0.2.0 admission core
+
+Observation and pressure policy feed finite per-scope ceilings and gates into `admission`. Explicit parent paths retain shared constraints; each multi-allocation job becomes one indivisible candidate vector. Bounded exact branch-and-bound chooses a feasible set, then a private revision-bound plan atomically reserves the entire set in a single-coordinator ledger. Release and refresh invalidate older plans; budget shrink reports deficits without silently dropping active jobs. This does not launch processes or promise kernel resources. See [design](admission-design.md), [public API](../admission/README.md) and [review cases](review-response.md).
+
 ## Data flow
 
 ```mermaid

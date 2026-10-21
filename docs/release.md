@@ -1,5 +1,15 @@
 # 交付与发布记录
 
+## 0.2.0 初审后修订（2026-10-21）
+
+新增 `admission` 包：显式层级约束、CPU/内存联合选择、跨分支整组作业、有界精确优化、具体阻塞解释、方案版本检查、整批逻辑预留/释放/预算缩减欠额。原0.1.0诊断API保持兼容。输入关系的成对案例和本期净新增职责见review-response.md。
+
+Windows wasm/wasm-gc/js各30项库/文档测试；格式、deny-warn check/build通过；旧回放与新准入演示均通过独立oracle。每后端66个选择案例及提交/过期/缩额/释放生命周期检查。实际0.2.0归档在独立消费者中通过三后端各2项API测试，工具总计32=依赖库/文档30+消费者2。证据见test-evidence/*2026-10-21.json。
+
+当前本地修订就绪；0.2.0 GitHub最终提交CI、Linux新增真实采集衔接、Mooncakes发布及registry消费者尚待执行核实。直接Linux测试机本轮连接超时；CI已增加新oracle与真实采集衔接。原0.1.0发布数据与测试记录不改成新版本结果。
+
+## 0.1.0 历史发布
+
 项目：MoonPressure 0.1.0。更新日期：2026-10-18。公开仓库 [trail-it/moonpressure](https://github.com/trail-it/moonpressure)，默认分支 main；[Mooncakes 0.1.0](https://mooncakes.io/docs/trail-it/moonpressure@0.1.0) 已由核实为 trail-it 的 CLI 账号发布，并完成确切版本独立消费。当前提交使用已核实 GitHub 账号的 noreply 身份；此前中性本地阶段历史保留原样。
 
 ## 公开发布证据

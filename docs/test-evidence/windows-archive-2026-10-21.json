@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "module": "trail-it/moonpressure",
+  "source": "actual local zip extracted into isolated workspace",
+  "consumer_tests": {
+    "wasm": 2,
+    "wasm-gc": 2,
+    "js": 2
+  },
+  "registry_installation": "not performed",
+  "archive_files": 76
+}

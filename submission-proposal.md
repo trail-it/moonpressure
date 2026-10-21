@@ -1,21 +1,21 @@
-# MoonPressure 0.1.0：Linux cgroup 资源压力诊断
+# MoonPressure 项目申报书（初审后修订）
 
-2026 MoonBit 黑客松十月赛，本地申报草稿，2026-10-18。用户指定 GitHub 身份 trail-it；仓库 https://github.com/trail-it/moonpressure，模块 trail-it/moonpressure@0.1.0；本次发布结果见 docs/release.md，队员/正式报名资料待本人确认。
+**1、项目名称**：MoonPressure——面向 Linux cgroup 的多资源批次准入与预留库，0.2.0 修订版，2026-10-21。
 
-## 解决什么问题
-为容器内编译、AI 工具调用和后台任务队列提供可解释的降载建议：宿主空闲不代表容器未节流，叶节点 memory.max=max 也可能受父组共享限额约束。
+**2、项目简介**：解决多个待运行作业争用共享父组资源时“各自够用，合起来超额”的问题。输入层级、CPU/内存预算、压力门禁及作业资源申请，联合选择可运行的整组作业，以带版本检查的账本预留容量；保留旧版压力观测作为输入能力。
 
-## 生态新增
-初选检索3019条元数据；10/18复查3088条并补读sysinfo@0.1.6、subproc@0.3.0发布源码。sysinfo已有挂载根cgroup内存/swap查询，subproc提供进程管理与采样；本项目独立新增可见祖先共享预算、PSI/节流差分和滞回准入。精确版本与能力矩阵见补核报告。
+**3、方向与通用性**：系统基础库、开发者工具。适用于容器和systemd服务中的编译、AI工具和批处理队列；纯MoonBit核心支持wasm、wasm-gc、js、native，Linux采集只读，由调用方实际执行作业。
 
-## 已完成能力
-核心为纯 MoonBit：类型化解析、父组共享内存余量、CPU quota 上界、身份/计数器重置检查、OOM 增量与连续高低压状态机、JSON。Linux C 桥仅负责只读 I/O、stat、时钟和 sleep；不自动修改内核或终止任务。
+**4、完整使用场景与关系案例**：
 
-## 可复现验证
-2026-10-12 工具链；Windows 三后端、Linux 四后端各 18 项库/文档测试与 check/build/格式通过。synthetic 演示五区间跨后端一致。10/15 真实 Linux cgroup 三次观察/两个差分区间通过独立 Python 原始文本 oracle。实际归档与 Mooncakes 0.1.0 下载包分别通过独立消费者验证；Linux 从下载包编译 C 桥实调 cgroup。公开代码冻结提交 011ea05 的 [远端 CI](https://github.com/trail-it/moonpressure/actions/runs/39106369889) 已通过；发布后结果见 docs/release.md。
+- **编译队列共享预算**：两个子组各有100内存预算，各申请60。共享父组预算100时仅准入一个；改为两个独立预算100的父组时同时准入，避免逐叶判断超分配。
+- **AI工具互补需求**：CPU/内存各10，A申请(内存10,CPU10)、价值9，B申请(6,4)、C申请(4,6)、价值各6。联合选B+C得12；仅将C内存改为7，改选A得9，队列据此派发不同组合。
+- **协同批处理整组启动**：一个作业须同时占用两个分支，另有只需开放分支的小作业。一支有压力时整组等待、小作业可运行；全部开放后重新竞争预算，防止半组占用。作业退出或启动失败后明确释放预留。
 
-## 来源、AI 与责任
-MIT，引用 Linux 官方 cgroup/PSI 规范，无第三方实现源码移植；synthetic 输入为原创。Codex 辅助调研、实现、测试与材料，提供手算、代码/测试入口和演示导读，参赛者须本人复核架构、单位、状态机及限制；人工理解尚待本人确认。
+**5、核心功能及实质新增**：验证层级、沿全部祖先累计申请；在至多16作业/64节点窗口中，以分支定界精确选择总价值最大组合；支持整组申请、原子逻辑预留、过期方案拒绝、释放及缩额欠账；逐项解释资源/门禁冲突。两份方案同时看到100且各申请60，首份提交后第二份必须失效，不能重复准入。Windows三后端各30项库/文档测试、66个选择案例及独立穷举对照通过；原生与发布结果见交付记录。
 
-## 演示、维护与限制
-三分钟命令脚本见 docs/demo.md：父组余量、连续压力降载、三次低压恢复、真实采集与独立对照。保留边界测试和版本化 API；后续可接入调度器。当前不含 cpuset/affinity、隐藏祖先和自动控制；非原子快照、共享余量不保证免 OOM。未制造真实 OOM/压力；GitHub/Mooncakes发布已获授权，线上结果以release.md记录为准；报名/官方审核未执行。
+**6、原创性**：原创MoonBit实现，MIT许可；新增核心为联合选择与预留生命周期，不以阈值滞回代替调度。采用已有优化方法，不声称算法首创；C仅负责采集I/O等宿主能力，Codex辅助范围见AI_USAGE.md。
+
+**7、移植与参考**：非移植项目，无移植上游许可证适用项。资源语义依据[Linux cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html)，无第三方实现源码移植。已补核moonpool、moontask的公开能力边界，新增范围与其资源池/队列执行职责区分，见复审补充说明。
+
+**8、仓库与复现证据**：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)，保留真实开发与本轮实质修改[历史](https://github.com/trail-it/moonpressure/commits/main/)。[复审补充说明](https://github.com/trail-it/moonpressure/blob/main/docs/review-response.md)提供实现位置、成对案例、复现命令；版本及验证状态见[交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)。本轮为初审驳回后的修改，尚无复审通过结论。
