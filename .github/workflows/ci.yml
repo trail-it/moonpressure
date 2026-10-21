@@ -37,6 +37,11 @@ jobs:
           python3 -c 'import json; d=json.load(open("demo-output/admission-live.json")); assert d["real_linux_collection"] and d["stale_plan_rejected"] and d["released_all"] and d["processes_started"] == 0; print("Live collection to logical admission ledger passed")'
       - name: Validate actual package consumer
         run: python3 scripts/verify_package.py
+      - name: Validate dispatcher model, real children and planning comparison
+        run: |
+          python3 scripts/verify_dispatch.py
+          python3 scripts/verify_execution.py
+          python3 scripts/verify_benchmark.py
       - name: Validate exact registry version when released
         run: |
           python3 - <<'PY'
@@ -58,3 +63,6 @@ jobs:
             demo-output/consumer-registry.json
             demo-output/admission-summary.json
             demo-output/admission-live.json
+            demo-output/dispatch-model-summary.json
+            demo-output/execution-summary.json
+            demo-output/benchmark-summary.json

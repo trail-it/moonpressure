@@ -5,7 +5,10 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 MODULE='trail-it/moonpressure'
 
 def run(*args,cwd=ROOT):
-    p=subprocess.run(list(map(str,args)),cwd=cwd,check=True,capture_output=True,text=True,encoding='utf8',timeout=180)
+    p=subprocess.run(list(map(str,args)),cwd=cwd,capture_output=True,text=True,encoding='utf8',timeout=180)
+    if p.returncode:
+        print((p.stdout+p.stderr)[-5000:],file=sys.stderr)
+        p.check_returncode()
     print(p.stdout,end='')
     return p.stdout
 
@@ -19,6 +22,7 @@ def main():
     args=parser.parse_args()
     version=args.registry_version or re.search(r'^version\s*=\s*"([^"]+)"',(ROOT/'moon.mod').read_text(),re.M)[1]
     has_admission=tuple(map(int,version.split('.'))) >= (0,2,0)
+    has_dispatch=tuple(map(int,version.split('.'))) >= (0,3,0)
     base=ROOT/'_build/package-consumers';base.mkdir(parents=True,exist_ok=True)
     work=pathlib.Path(tempfile.mkdtemp(prefix='consumer-',dir=base))
     names=[]
@@ -34,6 +38,8 @@ def main():
                 assert file in names,('missing archive file',file)
             if has_admission:
                 assert {'admission/moon.pkg','admission/pkg.generated.mbti','admission/search.mbt','admission/ledger.mbt'}.issubset(names)
+            if has_dispatch:
+                assert {'dispatch/moon.pkg','dispatch/pkg.generated.mbti','dispatch/dispatcher.mbt','examples/dispatcher/stdio.c'}.issubset(names)
             z.extractall(work/'library')
         write(work/'moon.work','members = ["library", "consumer"]\n')
     consumer=work/'consumer'
@@ -49,6 +55,7 @@ def main():
         assert len(resolved)==1 and resolved[0]['version']==version, 'resolved a different registry version'
         assert resolved[0]['source']['kind']=='registry' and not resolved[0]['workspace_member'], 'dependency is not from the public registry'
     extra=f', "{MODULE}/admission" @admission' if has_admission else ''
+    if has_dispatch:extra+=f', "{MODULE}/dispatch" @driver'
     write(consumer/'moon.pkg',f'import {{ "{MODULE}" @pressure{extra} }} for "test"\n')
     write(consumer/'api_test.mbt',r'''///|
 test "packaged public APIs enforce parent budget and OOM admission" {
@@ -94,10 +101,34 @@ test "downloaded planner selects complementary jobs and rejects stale commits" {
   assert_eq(ledger.balances()[0].free.memory_bytes, 10L)
 }
 ''')
+    if has_dispatch:
+        write(consumer/'dispatch_test.mbt',r'''///|
+test "downloaded dispatcher retains cancellation lease and rejects old attempt" {
+  let cap = @admission.Resources::new(memory_bytes=10L, cpu_millis=10L)
+  let d = @driver.Dispatcher::new([@admission.Scope::new("root", cap)])
+  d.submit(@admission.Job::new("job", value=1L, [@admission.Allocation::new("root", cap)]))
+  let actions = d.dispatch()
+  guard actions is [Start("job", old)] else { fail("expected start") }
+  assert_eq(d.cancel("job"), Some(@driver.Action::Stop("job", old)))
+  assert_eq(d.balances()[0].free.memory_bytes, 0L)
+  assert_true(d.spawn_failed(old))
+  assert_false(d.spawn_failed(old))
+  d.retry("job")
+  let actions = d.dispatch()
+  guard actions is [Start("job", fresh)] else { fail("expected retry") }
+  assert_true(fresh > old)
+  assert_true(try { ignore(d.exited(old, 0)); false } catch { @driver.StaleAttempt => true; _ => false })
+  assert_eq(d.balances()[0].free.memory_bytes, 0L)
+  assert_eq(d.started(fresh), None)
+  assert_true(d.exited(fresh, 0))
+  assert_eq(d.status("job").state, @driver.State::Succeeded)
+  assert_eq(d.balances()[0].free.memory_bytes, 10L)
+}
+''')
     targets=['wasm','wasm-gc','js']
     if sys.platform.startswith('linux'):targets.append('native')
     for target in targets:run('moon','-C',consumer,'test','--target',target,'--deny-warn')
-    result={'version':version,'module':MODULE,'source':'public registry exact version' if args.registry_version else 'actual local zip extracted into isolated workspace','consumer_tests':{t:2 if has_admission else 1 for t in targets},'registry_installation':version if args.registry_version else 'not performed'}
+    result={'version':version,'module':MODULE,'source':'public registry exact version' if args.registry_version else 'actual local zip extracted into isolated workspace','consumer_tests':{t:3 if has_dispatch else 2 if has_admission else 1 for t in targets},'registry_installation':version if args.registry_version else 'not performed'}
     if args.registry_version:result.update({'resolved_module_version':version,'local_workspace_override':False,'resolution_evidence':'moon tree --json registry source'})
     if not args.registry_version:result['archive_files']=len(names)
     if sys.platform.startswith('linux'):

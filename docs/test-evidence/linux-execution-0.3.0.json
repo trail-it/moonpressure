@@ -1,0 +1,21 @@
+{
+  "complementary_batch_real_children": [
+    "b",
+    "c"
+  ],
+  "launch_failure_retry_and_late_callback": "passed",
+  "nonzero_exit_release": "passed",
+  "cancel_holds_until_actual_wait": "passed",
+  "cancel_before_spawn_ack": "passed",
+  "environment": "actual Linux child processes in the observed cgroup",
+  "real_child_launches": 5,
+  "maximum_simultaneous_children": 2,
+  "worker_buffer_bytes_each": 1048576,
+  "worker_deadline_seconds": 8,
+  "live_observation_refreshed": true,
+  "all_children_reaped": true,
+  "final_reserved_memory_bytes": 0,
+  "cgroup_writes": 0,
+  "unrelated_processes_signalled": 0,
+  "limits": "Bounded lifecycle demonstration; declared resource estimates are not kernel-enforced limits or measured throughput."
+}

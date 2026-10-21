@@ -1,0 +1,18 @@
+{
+  "platform": "Linux",
+  "kernel": "7.0.0-38-generic",
+  "live_observations": 3,
+  "live_intervals": 2,
+  "independent_raw_text_oracle": "passed",
+  "fixture_checks": {
+    "synthetic_native_capture": "passed",
+    "missing_optional_psi": "passed",
+    "parent_headroom": "passed",
+    "path_traversal_rejected": true,
+    "oversized_read_rejected": true,
+    "missing_required_rejected": true
+  },
+  "cgroup_writes": 0,
+  "privileged_operations": 0,
+  "limits": "Read-only live sampling; no induced CPU/memory pressure, OOM or power-loss tests."
+}

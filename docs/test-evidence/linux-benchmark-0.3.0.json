@@ -1,0 +1,232 @@
+{
+  "synthetic": true,
+  "cases": 20,
+  "timing": "release native; monotonic microseconds; warm-up; 3 measured plans/case",
+  "fifo_baseline": "first-fit in submission order; infeasible jobs skipped",
+  "greedy_baseline": "descending declared value; stable submission-order ties; first-fit",
+  "wins_over_fifo": 17,
+  "wins_over_greedy": 13,
+  "rows": [
+    {
+      "case": "complement-12",
+      "jobs": 12,
+      "scopes": 1,
+      "fifo_first_fit_value": 42,
+      "value_greedy_value": 36,
+      "exact_value": 48,
+      "median_planning_us": 50,
+      "maximum_planning_us": 51,
+      "explored_states": 2144
+    },
+    {
+      "case": "complement-16",
+      "jobs": 16,
+      "scopes": 1,
+      "fifo_first_fit_value": 42,
+      "value_greedy_value": 36,
+      "exact_value": 48,
+      "median_planning_us": 63,
+      "maximum_planning_us": 69,
+      "explored_states": 3600
+    },
+    {
+      "case": "dense-64-scopes-16-jobs",
+      "jobs": 16,
+      "scopes": 64,
+      "fifo_first_fit_value": 8,
+      "value_greedy_value": 8,
+      "exact_value": 8,
+      "median_planning_us": 39918,
+      "maximum_planning_us": 39952,
+      "explored_states": 60059
+    },
+    {
+      "case": "all-fit-16",
+      "jobs": 16,
+      "scopes": 1,
+      "fifo_first_fit_value": 16,
+      "value_greedy_value": 16,
+      "exact_value": 16,
+      "median_planning_us": 4,
+      "maximum_planning_us": 4,
+      "explored_states": 33
+    },
+    {
+      "case": "mixed-0",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 34,
+      "value_greedy_value": 39,
+      "exact_value": 42,
+      "median_planning_us": 13,
+      "maximum_planning_us": 13,
+      "explored_states": 329
+    },
+    {
+      "case": "mixed-1",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 45,
+      "value_greedy_value": 59,
+      "exact_value": 68,
+      "median_planning_us": 93,
+      "maximum_planning_us": 94,
+      "explored_states": 2489
+    },
+    {
+      "case": "mixed-2",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 46,
+      "value_greedy_value": 68,
+      "exact_value": 70,
+      "median_planning_us": 154,
+      "maximum_planning_us": 154,
+      "explored_states": 4242
+    },
+    {
+      "case": "mixed-3",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 27,
+      "value_greedy_value": 64,
+      "exact_value": 64,
+      "median_planning_us": 326,
+      "maximum_planning_us": 342,
+      "explored_states": 8500
+    },
+    {
+      "case": "mixed-4",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 17,
+      "value_greedy_value": 17,
+      "exact_value": 17,
+      "median_planning_us": 5,
+      "maximum_planning_us": 5,
+      "explored_states": 48
+    },
+    {
+      "case": "mixed-5",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 33,
+      "value_greedy_value": 74,
+      "exact_value": 77,
+      "median_planning_us": 142,
+      "maximum_planning_us": 146,
+      "explored_states": 3874
+    },
+    {
+      "case": "mixed-6",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 48,
+      "value_greedy_value": 67,
+      "exact_value": 73,
+      "median_planning_us": 170,
+      "maximum_planning_us": 178,
+      "explored_states": 4636
+    },
+    {
+      "case": "mixed-7",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 46,
+      "value_greedy_value": 68,
+      "exact_value": 69,
+      "median_planning_us": 164,
+      "maximum_planning_us": 167,
+      "explored_states": 4288
+    },
+    {
+      "case": "mixed-8",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 40,
+      "value_greedy_value": 58,
+      "exact_value": 58,
+      "median_planning_us": 15,
+      "maximum_planning_us": 15,
+      "explored_states": 445
+    },
+    {
+      "case": "mixed-9",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 18,
+      "value_greedy_value": 59,
+      "exact_value": 63,
+      "median_planning_us": 179,
+      "maximum_planning_us": 180,
+      "explored_states": 4960
+    },
+    {
+      "case": "mixed-10",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 41,
+      "value_greedy_value": 60,
+      "exact_value": 61,
+      "median_planning_us": 355,
+      "maximum_planning_us": 357,
+      "explored_states": 10068
+    },
+    {
+      "case": "mixed-11",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 29,
+      "value_greedy_value": 64,
+      "exact_value": 64,
+      "median_planning_us": 225,
+      "maximum_planning_us": 234,
+      "explored_states": 6287
+    },
+    {
+      "case": "mixed-12",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 37,
+      "value_greedy_value": 51,
+      "exact_value": 51,
+      "median_planning_us": 10,
+      "maximum_planning_us": 10,
+      "explored_states": 197
+    },
+    {
+      "case": "mixed-13",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 50,
+      "value_greedy_value": 67,
+      "exact_value": 69,
+      "median_planning_us": 166,
+      "maximum_planning_us": 168,
+      "explored_states": 4783
+    },
+    {
+      "case": "mixed-14",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 47,
+      "value_greedy_value": 64,
+      "exact_value": 66,
+      "median_planning_us": 151,
+      "maximum_planning_us": 161,
+      "explored_states": 4140
+    },
+    {
+      "case": "mixed-15",
+      "jobs": 16,
+      "scopes": 3,
+      "fifo_first_fit_value": 36,
+      "value_greedy_value": 47,
+      "exact_value": 64,
+      "median_planning_us": 110,
+      "maximum_planning_us": 111,
+      "explored_states": 3026
+    }
+  ],
+  "limits": "Declared-value improvement is not measured throughput. Timings are environment-specific, not an SLA or a cross-language speed comparison."
+}

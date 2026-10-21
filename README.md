@@ -1,13 +1,13 @@
 # MoonPressure
 
-MoonPressure 为 MoonBit 应用提供 Linux cgroup v2 资源压力诊断与批次准入规划。0.2.0 在原有观测和滞回基础上增加共享祖先、多资源、整组作业的联合选择，以及带版本检查的资源预留账本：回答“本轮该启动哪些作业”，并防止多次调度重复分配容量。
+MoonPressure 为 MoonBit 应用提供 Linux cgroup v2 资源压力诊断与批次准入规划。0.3.0 将共享祖先、多资源整组选择和预留账本衔接到作业生命周期：启动失败、取消、退出确认、重试及旧回调隔离均由 MoonBit 协调器处理。
 
 适用场景：在容器或 systemd 服务中运行编译队列、AI 工具任务和后台作业。宿主 CPU 利用率不能反映容器节流；叶节点 `memory.max=max` 仍可能受父级共享预算约束。
 
-**MoonPressure 0.2.0，MIT。** 公开源码：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)。初审意见对应的新增核心与可运行反例见 [复审补充说明](docs/review-response.md)，API 用法见 [admission](admission/README.md)。发布与确切版本安装验证结果见 GitHub 的[最新交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)；历史0.1.0仅含原有诊断API。
+**MoonPressure 0.3.0，MIT。** 公开源码：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)。初审意见对应的新增核心与可运行反例见 [复审补充说明](docs/review-response.md)，API 用法见 [admission](admission/README.md) 和 [dispatch](dispatch/README.md)。发布与确切版本安装验证结果见 GitHub 的[最新交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)；历史0.1.0仅含原有诊断API。
 
 ```sh
-moon add trail-it/moonpressure@0.2.0
+moon add trail-it/moonpressure@0.3.0
 ```
 
 ## 修订版：关系不同，准入结果不同
@@ -90,7 +90,16 @@ python3 scripts/verify_linux.py        # Linux cgroup v2 环境
 python3 scripts/verify_package.py      # 实际 zip 归档的隔离消费者
 ```
 
-2026-10-18：18 项库/文档测试在 Windows wasm/wasm-gc/js 和 Linux wasm/wasm-gc/js/native 通过，包含中间压力打断恢复、缺失 PSI 保持 OOM 降载的回归。10/15 的 Linux 真实采样与独立 Python 原始文本 oracle 证据继续保留。完整状态与归档验证见 `docs/release.md`、`docs/acceptance-review.md`。CI 配置已准备，尚未有远端运行结果。
+2026-10-21：Windows wasm/wasm-gc/js、指定Linux服务器四后端各35项库/文档测试通过，每后端66个选择案例通过独立穷举对照。Linux实际启动并回收5个演示子进程，2,000次动态事件逐步对照通过；20组合成工作集对FIFO/价值贪心分别17/13组声明价值更高，其余持平，64层密集案例规划约40毫秒。详见 [实测说明](docs/execution-validation.md)，发布和最终CI状态见 [交付记录](docs/release.md)。
+
+Linux 在release构建后还可运行：
+
+```sh
+python3 scripts/verify_dispatch.py     # 独立动态模型
+python3 scripts/verify_execution.py    # 真实自有子进程，取消后等待退出
+python3 scripts/verify_benchmark.py    # 声明价值对照及规划耗时
+```
+
 
 ## 工程边界
 
@@ -99,7 +108,7 @@ python3 scripts/verify_package.py      # 实际 zip 归档的隔离消费者
 - CPU 配额仅是可见祖先 quota 上界，不含 cpuset/affinity、调度竞争或保证算力。节流周期百分比不是节流时间百分比。
 - 祖先内存余量是读取时刻共享上界，不是可预留额度；namespace 外不可见约束无法推断。跨文件读取不是原子快照。
 - cgroup 身份由设备号和 inode 识别，用于检测常见删除重建；inode 长期复用或跨系统重放需调用方提供更完整世代标识。
-- 本版本不注册 PSI poll、不控制内核、不自动执行降载；没有进行人为 CPU/内存压力、真实 OOM 或掉电实验。
+- 本版本不注册 PSI poll、不控制内核；示例宿主仅执行并清理自有演示子进程；没有进行人为 CPU/内存压力、真实 OOM 或掉电实验。
 - 每个文本最多 64 KiB，层级最多 256，十进制计数器范围为非负 Int64。JSON schema 1 中 Int64 均为十进制字符串，缺省值为 `null`，保留超过 2^53 的精度。
 
 相邻实现的已核实重叠与新增贡献见 [10/18 源码补核](docs/ecosystem-supplement-2026-10-18.md)。sysinfo 已有 cgroup 内存查询，本项目新增在祖先预算、PSI/节流差分和准入状态。

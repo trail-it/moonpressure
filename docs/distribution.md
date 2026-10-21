@@ -12,3 +12,5 @@ Git 的上传范围按真实跟踪清单及可达历史检查；Mooncakes 按 `.
 仓库 owner、此次 GitHub 上传账号、发布准备提交的 author/committer 均为 trail-it；GitHub API 确认数值 ID 328298658，提交使用其官方格式 noreply 地址。此前 Local Development 的本地阶段历史保留原样，不改造日期或把 10 月15日称为公开开发时间。首次公开时间以实际推送/仓库记录为准。
 
 Mooncakes 已核实 CLI 登录身份为 trail-it；浏览器、GitHub CLI、Mooncakes CLI 分别确认。发布结果、默认分支 SHA、CI、注册表版本与独立消费证据见 GitHub 最新 release.md。报名/人工理解确认不由上传自动完成。
+
+0.3.0增加dispatch源码/公开接口、examples/dispatcher/stdio.c、验证脚本和脱敏执行/模型/性能摘要；这些均属公开交付。原始服务器采样、实际cgroup路径、SSH主机别名和发布辅助脚本仍仅留忽略目录。只发布指定摘要，不整体上传demo-output。

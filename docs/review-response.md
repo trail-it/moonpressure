@@ -2,6 +2,14 @@
 
 修订日期：2026-10-21。已收到初审未通过通知；本文件说明新增实现和复审证据，不代表已通过复审。
 
+## 0.3.0 补充：闭合作业执行生命周期
+
+新增 `dispatch` 包私有持有预留账本，串联Queued/Starting/Running/Stopping及三种终结状态。取消只请求停止、仍占容量，实际退出确认才释放；启动失败无子进程时释放；重试使用新attempt ticket，旧回调不能释放新预留。职责位于 dispatch/dispatcher.mbt，公开契约见 [dispatch说明](../dispatch/README.md)。这提供执行器可嵌入的单实例协调核心，不宣称持久队列或跨进程一致性。
+
+**时序关系案例**：同一任务取消时，如果进程仍活着，状态Stopping、剩余预算仍为0，其他任务不能占用；只有宿主实际wait后报告退出，余额恢复。若失败重试已占用预算，旧attempt的退出回调被拒绝，不能造成过量启动。这些结果依赖作业身份和事件先后，不是计数器差分或阈值变换。
+
+指定Linux服务器已真实启动并回收5个子进程，覆盖互补批次、启动失败重试、非零退出、启动前取消及运行中取消；2,000次动态模型事件逐步比较状态/余额/版本/动作通过。20组合成对照对FIFO/价值贪心分别17/13组价值更高，其余持平，密集边界约40毫秒；具体证据、复现命令和限制见 [实测说明](execution-validation.md)。Windows三后端/Linux四后端现各35项库/文档测试。以下0.2.0证据作为历史保留。
+
 ## 接受的问题与新增职责
 
 0.1.0 的净核心确实集中在余量、差分及阈值滞回。它能观测压力，却不能决定多个待运行作业如何共同占用共享预算。本轮在原有任务准入范围中新增 `admission` 包，负责**受层级 CPU/内存约束的整组批次选择，以及带版本检查的预留提交与释放**。不是将原有统计变换重新包装成调度器。
@@ -40,6 +48,6 @@ python scripts/verify_admission.py wasm wasm-gc js
 
 ## 生态与原创范围复核
 
-2026-10-21 阅读 [moonpool 仓库 README](https://github.com/moonbitstack/moonpool)：其公开说明包括资源池、重试、速率/配额及并发门禁；阅读 [moontask 仓库 README](https://github.com/nexacodes/moontask)：其公开说明包括异步队列、Redis 后端、任务租约、重试及队列暂停/恢复。两者均为 Apache-2.0。本轮不重做这些职责；新增范围是 cgroup 可见层级中的多资源整组选择和资源预算预留。这里比较的是公开 README 的能力边界，未据此断言其全部源码都没有类似实现。原有 sysinfo/subproc 比较仍见 ecosystem-supplement-2026-10-18.md。
+2026-10-21 阅读 [moonpool 仓库 README](https://github.com/moonbitstack/moonpool)：其公开说明包括资源池、重试、速率/配额及并发门禁；阅读 [moontask 仓库 README](https://github.com/nexacodes/moontask)：其公开说明包括异步队列、Redis 后端、任务租约、重试及队列暂停/恢复。两者均为 Apache-2.0。不以重做持久队列、Redis后端或通用资源池作为新增贡献；0.3.0含执行器常见生命周期接口，独立核心仍是 cgroup 可见层级中的多资源整组选择和资源预算预留。这里比较的是公开 README 的能力边界，未据此断言其全部源码都没有类似实现。原有 sysinfo/subproc 比较仍见 ecosystem-supplement-2026-10-18.md。
 
 新增代码为本项目原创 MoonBit 实现，无上述项目源码移植；资源语义依据 [Linux cgroup v2 官方规范](https://docs.kernel.org/admin-guide/cgroup-v2.html)。AI 辅助范围与本人理解要求见 AI_USAGE.md。赛事页面已于2026-10-21复读[官方源码](https://github.com/moonbitlang/Hackathon2026/blob/main/src/App.tsx)，仍标明10月31日截止并允许未通过项目修改；本次未代提交报名表或联系赛事方。
