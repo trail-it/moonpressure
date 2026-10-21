@@ -2,11 +2,23 @@
 
 ## 0.2.0 初审后修订（2026-10-21）
 
+### 指定服务器复测完成
+
+2026-10-21 按用户授权通过 SSH 在其指定服务器运行，环境为 Linux 7.0.0-38-generic / x86_64、cgroup v2，moon 0.1.20261012、moonc v0.10.15+943464bfa。测试使用提交 `cad53c3dd03957a5ac2ad62e5c175f3daa802db6` 的独立源码副本，不覆盖服务器原有源码；未传输 Windows 凭据或工具链。
+
+- wasm / wasm-gc / js / native 各30项库/文档测试通过，格式、deny-warn check和release build通过。
+- 每后端5个回放区间和66个准入选择案例通过独立对照；后者是明确的合成输入，不冒充真实资源压力。
+- 真实cgroup三次观察、两个差分区间通过独立raw-text oracle，必要文件缺失、超大读取和越界路径的合成错误测试通过。
+- 真实采集到账本衔接观察到4个可见节点、1项逻辑准入；旧方案拒绝、全部释放检查通过，没有实际启动调度作业。
+- 从Mooncakes安装确切0.2.0，四后端各2项消费者测试通过；依赖图确认registry来源、无workspace覆盖，从下载包编译C桥并实读cgroup。
+
+脱敏证据：[linux-server-2026-10-21.json](test-evidence/linux-server-2026-10-21.json)。原始主机采样仅留在服务器忽略的测试目录。此次是只读实测，不施加压力、制造OOM或修改cgroup设置；与此前GitHub Actions Ubuntu运行器的记录分开保留。
+
 新增 `admission` 包：显式层级约束、CPU/内存联合选择、跨分支整组作业、有界精确优化、具体阻塞解释、方案版本检查、整批逻辑预留/释放/预算缩减欠额。原0.1.0诊断API保持兼容。输入关系的成对案例和本期净新增职责见review-response.md。
 
 Windows wasm/wasm-gc/js各30项库/文档测试；格式、deny-warn check/build通过；旧回放与新准入演示均通过独立oracle。每后端66个选择案例及提交/过期/缩额/释放生命周期检查。实际0.2.0归档在独立消费者中通过三后端各2项API测试，工具总计32=依赖库/文档30+消费者2。证据见test-evidence/*2026-10-21.json。
 
-核心冻结提交 `1250a8b24be5c876d6db95af37f01279633c31bc` 的[Linux CI](https://github.com/trail-it/moonpressure/actions/runs/39564913391)已通过四后端测试/选择oracle、真实采集到账本衔接和实际归档消费者。直接Linux测试机本轮连接超时后采用此次CI实测，没有沿用旧版记录。
+核心冻结提交 `1250a8b24be5c876d6db95af37f01279633c31bc` 的[Linux CI](https://github.com/trail-it/moonpressure/actions/runs/39564913391)已通过四后端测试/选择oracle、真实采集到账本衔接和实际归档消费者。初次直接连接Linux测试机超时时先完成了CI验证；随后指定服务器复测也已完成，见上节独立证据。
 
 [Mooncakes 0.2.0](https://mooncakes.io/docs/trail-it/moonpressure@0.2.0) 已由trail-it于2026-10-21 07:56:50 UTC（北京时间15:56:50）发布，registry构建成功。实际上传81文件，SHA-256与官方checksum一致，必要C桥、admission源码及接口均保留。Windows三后端各2项公开API消费者测试通过；解析出的下载模块确认为0.2.0，祖先目录无moon.work覆盖。证据见publication-0.2.0.json和windows-registry-0.2.0.json。
 

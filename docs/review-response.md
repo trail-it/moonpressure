@@ -26,6 +26,8 @@
 
 ## 可复现入口与证据
 
+**指定服务器实测已完成（2026-10-21）**：在用户提供的Linux服务器上，以发布提交的隔离源码副本通过四后端各30项测试、每后端66个合成选择案例；真实cgroup三次观察/两个区间通过独立对照。真实采集识别4个可见节点并完成1项逻辑准入、旧方案拒绝和预留释放；Mooncakes 0.2.0下载包的四后端各2项消费测试及C桥实机调用通过。此次为SSH服务器实测，证据见 [linux-server-2026-10-21.json](test-evidence/linux-server-2026-10-21.json)，与下述CI记录分开保存。没有施加CPU/内存压力或制造OOM。
+
 ```sh
 moon run examples/admission --target wasm-gc
 moon test admission --target wasm-gc --deny-warn
