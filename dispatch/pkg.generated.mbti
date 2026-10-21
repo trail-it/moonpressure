@@ -1,0 +1,76 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "trail-it/moonpressure/dispatch"
+
+import {
+  "moonbitlang/core/debug",
+  "trail-it/moonpressure/admission",
+}
+
+// Values
+
+// Errors
+pub(all) suberror DispatchError {
+  Invalid(String)
+  UnknownJob(String)
+  StaleAttempt
+} derive(Eq, @debug.Debug)
+pub fn DispatchError::equal(Self, Self) -> Bool
+pub fn DispatchError::not_equal(Self, Self) -> Bool
+pub fn DispatchError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub(all) enum Action {
+  Start(String, Int64)
+  Stop(String, Int64)
+} derive(Eq, @debug.Debug)
+pub fn Action::equal(Self, Self) -> Bool
+pub fn Action::not_equal(Self, Self) -> Bool
+pub fn Action::to_json(Self) -> Json
+pub fn Action::to_repr(Self) -> @debug.Repr
+
+pub struct Dispatcher {
+  // private fields
+}
+pub fn Dispatcher::balances(Self) -> Array[@admission.Balance]
+pub fn Dispatcher::cancel(Self, String) -> Action? raise DispatchError
+pub fn Dispatcher::dispatch(Self) -> Array[Action] raise
+pub fn Dispatcher::exited(Self, Int64, Int) -> Bool raise
+pub fn Dispatcher::forget(Self, String) -> Unit raise DispatchError
+pub fn Dispatcher::new(ArrayView[@admission.Scope]) -> Self raise
+pub fn Dispatcher::refresh(Self, ArrayView[@admission.Scope]) -> Unit raise
+pub fn Dispatcher::retry(Self, String) -> Unit raise DispatchError
+pub fn Dispatcher::revision(Self) -> Int64
+pub fn Dispatcher::spawn_failed(Self, Int64) -> Bool raise
+pub fn Dispatcher::started(Self, Int64) -> Action? raise DispatchError
+pub fn Dispatcher::status(Self, String) -> TaskView raise DispatchError
+pub fn Dispatcher::submit(Self, @admission.Job) -> Unit raise
+pub fn Dispatcher::tasks(Self) -> Array[TaskView]
+
+pub(all) enum State {
+  Queued
+  Starting
+  Running
+  Stopping
+  Succeeded
+  Failed
+  Cancelled
+} derive(Eq, @debug.Debug)
+pub fn State::equal(Self, Self) -> Bool
+pub fn State::label(Self) -> String
+pub fn State::not_equal(Self, Self) -> Bool
+pub fn State::to_repr(Self) -> @debug.Repr
+
+pub struct TaskView {
+  id : String
+  state : State
+  ticket : Int64?
+  exit_code : Int?
+} derive(Eq, @debug.Debug)
+pub fn TaskView::equal(Self, Self) -> Bool
+pub fn TaskView::not_equal(Self, Self) -> Bool
+pub fn TaskView::to_json(Self) -> Json
+pub fn TaskView::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

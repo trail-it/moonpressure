@@ -3,7 +3,7 @@ fn main raise {
   let args = @env.args()
   guard args.length() >= 4 && (args[1] == "capture" || args[1] == "watch") else {
     println(
-      "MoonPressure 0.2.0\nUsage: capture ROOT RELATIVE [raw]\n       watch ROOT RELATIVE COUNT DELAY_MS [raw]\nUse empty string for relative root. Linux cgroup v2 only. See README.",
+      "MoonPressure 0.3.0\nUsage: capture ROOT RELATIVE [raw]\n       watch ROOT RELATIVE COUNT DELAY_MS [raw]\nUse empty string for relative root. Linux cgroup v2 only. See README.",
     )
     return
   }

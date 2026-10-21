@@ -1,0 +1,17 @@
+import {
+  "trail-it/moonpressure/dispatch" @driver,
+  "trail-it/moonpressure/admission",
+  "trail-it/moonpressure/native",
+  "trail-it/moonpressure" @pressure,
+  "moonbitlang/core/json",
+  "moonbitlang/core/encoding/utf8",
+  "moonbitlang/core/env",
+}
+
+supported_targets = "native"
+
+pkgtype(kind: "executable")
+
+options(
+  "native-stub": [ "stdio.c" ],
+)

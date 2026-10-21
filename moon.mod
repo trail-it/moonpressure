@@ -1,12 +1,12 @@
 name = "trail-it/moonpressure"
 
-version = "0.2.0"
+version = "0.3.0"
 
 license = "MIT"
 
 readme = "README.md"
 
-description = "Linux cgroup v2 pressure diagnostics and hysteretic admission advice in MoonBit"
+description = "Linux cgroup pressure diagnostics, hierarchical admission and worker reservation lifecycle in MoonBit"
 
 keywords = [ "linux", "cgroup", "psi", "pressure", "admission" ]
 

@@ -1,0 +1,8 @@
+import {
+  "trail-it/moonpressure/admission" @planner,
+  "trail-it/moonpressure/native",
+}
+
+supported_targets = "native"
+
+pkgtype(kind: "executable")
