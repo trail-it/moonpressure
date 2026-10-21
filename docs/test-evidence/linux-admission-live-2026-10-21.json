@@ -1,0 +1,11 @@
+{
+  "real_linux_collection": true,
+  "visible_scopes": 3,
+  "gate": "open",
+  "selected_jobs": 1,
+  "stale_plan_rejected": true,
+  "released_all": true,
+  "root_ceiling_is_caller_policy": true,
+  "processes_started": 0,
+  "ci_run_url": "https://github.com/trail-it/moonpressure/actions/runs/39567078304"
+}

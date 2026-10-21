@@ -10,7 +10,9 @@ Windows wasm/wasm-gc/js各30项库/文档测试；格式、deny-warn check/build
 
 [Mooncakes 0.2.0](https://mooncakes.io/docs/trail-it/moonpressure@0.2.0) 已由trail-it于2026-10-21 07:56:50 UTC（北京时间15:56:50）发布，registry构建成功。实际上传81文件，SHA-256与官方checksum一致，必要C桥、admission源码及接口均保留。Windows三后端各2项公开API消费者测试通过；解析出的下载模块确认为0.2.0，祖先目录无moon.work覆盖。证据见publication-0.2.0.json和windows-registry-0.2.0.json。
 
-Linux确切版本registry消费由新增CI步骤核实，并只保存消费者/准入摘要等脱敏artifact，不上传原始主机采样。最终结果在完成后补录；后续提交仅修改验证脚本、CI和材料，运行时代码仍对应上述冻结提交。包内说明为发布时快照，最终材料以GitHub main为准。原0.1.0数据保留原样。
+Linux的[确切版本registry CI](https://github.com/trail-it/moonpressure/actions/runs/39567078304)已通过，四后端各2项消费者测试，依赖图确认为0.2.0 registry来源、无workspace覆盖；下载包编译C桥并实调cgroup。真实采集到账本的衔接记录为3个可见节点、1项逻辑准入，旧方案拒绝和释放检查通过，实际启动进程为0。摘要见linux-registry-0.2.0.json与linux-admission-live-2026-10-21.json。
+
+验证脚本已改用 `moon tree --json` 读取解析后的来源/版本，不假定不同工具链的依赖缓存目录。只保存指定的脱敏artifact，不上传原始主机采样。最终材料提交仅更新验证、CI和说明，运行时代码仍对应上述冻结提交；最终main CI见[Actions](https://github.com/trail-it/moonpressure/actions/workflows/ci.yml?query=branch%3Amain)，版本入口为[v0.2.0](https://github.com/trail-it/moonpressure/releases/tag/v0.2.0)。包内说明为发布时快照，最终材料以GitHub main为准，0.1.0历史数据保留原样。
 
 
 ## 0.1.0 历史发布
