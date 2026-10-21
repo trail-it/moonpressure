@@ -4,10 +4,10 @@ MoonPressure 为 MoonBit 应用提供 Linux cgroup v2 资源压力诊断与批�
 
 适用场景：在容器或 systemd 服务中运行编译队列、AI 工具任务和后台作业。宿主 CPU 利用率不能反映容器节流；叶节点 `memory.max=max` 仍可能受父级共享预算约束。
 
-**MoonPressure 0.2.0 修订版，MIT。** 公开源码：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)。初审意见对应的新增核心与可运行反例见 [复审补充说明](docs/review-response.md)，API 用法见 [admission](admission/README.md)。0.2.0 发布状态见 [交付记录](docs/release.md)；下列已发布的 0.1.0 仅含原有诊断 API，不含新增规划器。
+**MoonPressure 0.2.0，MIT。** 公开源码：[trail-it/moonpressure](https://github.com/trail-it/moonpressure)。初审意见对应的新增核心与可运行反例见 [复审补充说明](docs/review-response.md)，API 用法见 [admission](admission/README.md)。发布与确切版本安装验证结果见 GitHub 的[最新交付记录](https://github.com/trail-it/moonpressure/blob/main/docs/release.md)；历史0.1.0仅含原有诊断API。
 
 ```sh
-moon add trail-it/moonpressure@0.1.0
+moon add trail-it/moonpressure@0.2.0
 ```
 
 ## 修订版：关系不同，准入结果不同
@@ -104,4 +104,4 @@ python3 scripts/verify_package.py      # 实际 zip 归档的隔离消费者
 
 相邻实现的已核实重叠与新增贡献见 [10/18 源码补核](docs/ecosystem-supplement-2026-10-18.md)。sysinfo 已有 cgroup 内存查询，本项目新增在祖先预算、PSI/节流差分和准入状态。
 
-来源、许可与 AI 辅助范围见 `THIRD_PARTY.md`、`AI_USAGE.md`。申报正文为 `submission-proposal.md`；[一页申报 PDF](https://github.com/trail-it/moonpressure/blob/main/output/pdf/MoonPressure-proposal-0.1.0.pdf) 在 GitHub 提供，不进入库包归档。上传边界见 [分发清单](docs/distribution.md)。
+来源、许可与 AI 辅助范围见 `THIRD_PARTY.md`、`AI_USAGE.md`。本轮一页Markdown申报正文为 `submission-proposal.md`；[历史0.1.0申报PDF](https://github.com/trail-it/moonpressure/blob/main/output/pdf/MoonPressure-proposal-0.1.0.pdf)仅保留作历史材料，不代表本轮修订内容，也不进入库包归档。上传边界见 [分发清单](docs/distribution.md)。

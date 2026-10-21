@@ -34,7 +34,7 @@ python scripts/verify_admission.py wasm wasm-gc js
 
 演示输出6个关系案例和1个生命周期案例；验证器另外读取60个确定性生成输入。Python 独立枚举全部子集、重新沿父链计算资源和门禁、比较价值/数量/ID目标并重建所有延后原因；不调用 MoonBit 搜索实现。本轮 Windows 三后端各30项库/文档测试通过，其中新增准入包12项；每后端66个选择案例与生命周期检查通过。证据见 test-evidence/windows-core-2026-10-21.json、admission-oracle-2026-10-21.json。
 
-新增原生端到端入口 `examples/admission-live` 已完成 native check；直接 Linux 测试机当前连接超时，未将旧0.1.0 Linux记录当成本轮新增原生验证。当前原生运行状态与实际归档消费结果见 release.md；远端 CI 增加了新规划器 oracle 和真实采集衔接步骤。
+新增原生端到端入口 `examples/admission-live` 已在[本轮Linux CI](https://github.com/trail-it/moonpressure/actions/runs/39564913391)实际通过：采集两次真实cgroup数据、派生有限预算、规划/提交、拒绝旧方案并释放预留；不启动进程或写cgroup。该CI还通过四后端库测试、每后端66个选择案例、原有独立采集oracle及实际归档消费者。直接Linux测试机连接超时后，采用的是本轮CI的真实运行证据，没有沿用旧0.1.0记录。最终发布状态见release.md。
 
 ## 生态与原创范围复核
 

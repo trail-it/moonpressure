@@ -37,3 +37,24 @@ jobs:
           python3 -c 'import json; d=json.load(open("demo-output/admission-live.json")); assert d["real_linux_collection"] and d["stale_plan_rejected"] and d["released_all"] and d["processes_started"] == 0; print("Live collection to logical admission ledger passed")'
       - name: Validate actual package consumer
         run: python3 scripts/verify_package.py
+      - name: Validate exact registry version when released
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re, subprocess, urllib.request
+          version = re.search(r'^version\s*=\s*"([^"]+)"', pathlib.Path('moon.mod').read_text(), re.M)[1]
+          with urllib.request.urlopen('https://mooncakes.io/api-new/v0/manifest/trail-it/moonpressure', timeout=30) as response:
+              versions = [v['version'] for v in json.load(response)['versions']]
+          if version in versions:
+              subprocess.run(['python3', 'scripts/verify_package.py', '--registry-version', version], check=True)
+          else:
+              print('Current development version not published; registry consumption deferred')
+          PY
+      - name: Save sanitized validation summaries
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-summary
+          retention-days: 7
+          path: |
+            demo-output/consumer-registry.json
+            demo-output/admission-summary.json
+            demo-output/admission-live.json

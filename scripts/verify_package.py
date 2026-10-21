@@ -41,6 +41,10 @@ def main():
     if args.registry_version:
         assert not (work/'moon.work').exists()
         run('moon','-C',consumer,'add',f'{MODULE}@{version}')
+        assert not any((parent/'moon.work').exists() for parent in [consumer,*consumer.parents]), 'registry dependency has a workspace override'
+        resolved=(consumer/'.mooncakes'/MODULE/'moon.mod').read_text()
+        assert re.search(r'^name\s*=\s*"([^"]+)"',resolved,re.M)[1]==MODULE
+        assert re.search(r'^version\s*=\s*"([^"]+)"',resolved,re.M)[1]==version, 'resolved a different registry version'
     extra=f', "{MODULE}/admission" @admission' if has_admission else ''
     write(consumer/'moon.pkg',f'import {{ "{MODULE}" @pressure{extra} }} for "test"\n')
     write(consumer/'api_test.mbt',r'''///|
@@ -91,6 +95,7 @@ test "downloaded planner selects complementary jobs and rejects stale commits" {
     if sys.platform.startswith('linux'):targets.append('native')
     for target in targets:run('moon','-C',consumer,'test','--target',target,'--deny-warn')
     result={'version':version,'module':MODULE,'source':'public registry exact version' if args.registry_version else 'actual local zip extracted into isolated workspace','consumer_tests':{t:2 if has_admission else 1 for t in targets},'registry_installation':version if args.registry_version else 'not performed'}
+    if args.registry_version:result.update({'resolved_module_version':version,'local_workspace_override':False})
     if not args.registry_version:result['archive_files']=len(names)
     if sys.platform.startswith('linux'):
         write(consumer/'probe/moon.pkg',f'import {{ "{MODULE}/native", "moonbitlang/core/env" }}\nsupported_targets = "native"\noptions("is-main": true)\n')

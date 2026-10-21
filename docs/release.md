@@ -6,7 +6,7 @@
 
 Windows wasm/wasm-gc/js各30项库/文档测试；格式、deny-warn check/build通过；旧回放与新准入演示均通过独立oracle。每后端66个选择案例及提交/过期/缩额/释放生命周期检查。实际0.2.0归档在独立消费者中通过三后端各2项API测试，工具总计32=依赖库/文档30+消费者2。证据见test-evidence/*2026-10-21.json。
 
-当前本地修订就绪；0.2.0 GitHub最终提交CI、Linux新增真实采集衔接、Mooncakes发布及registry消费者尚待执行核实。直接Linux测试机本轮连接超时；CI已增加新oracle与真实采集衔接。原0.1.0发布数据与测试记录不改成新版本结果。
+核心冻结提交 `1250a8b24be5c876d6db95af37f01279633c31bc` 的[Linux CI](https://github.com/trail-it/moonpressure/actions/runs/39564913391)已通过四后端测试/选择oracle、真实采集到账本的衔接和实际归档消费者。直接Linux测试机本轮连接超时后以该次CI实测为证据。Mooncakes 0.2.0及发布后registry消费结果以GitHub最新记录为准，归档内此份说明是发布前快照。原0.1.0发布数据不改成新版本结果。
 
 ## 0.1.0 历史发布
 

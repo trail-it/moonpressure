@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "module": "trail-it/moonpressure",
+  "source": "public registry exact version",
+  "consumer_tests": {
+    "wasm": 2,
+    "wasm-gc": 2,
+    "js": 2
+  },
+  "registry_installation": "0.2.0",
+  "resolved_module_version": "0.2.0",
+  "local_workspace_override": false
+}
